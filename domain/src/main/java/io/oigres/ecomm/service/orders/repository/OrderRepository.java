@@ -7,8 +7,6 @@ import io.oigres.ecomm.service.orders.domain.Order;
 import io.oigres.ecomm.service.orders.enums.OrderStatusEnum;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.List;
 import java.util.Optional;
 
 public interface OrderRepository extends GenericRepository<Order, Long> {

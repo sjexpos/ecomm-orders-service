@@ -11,11 +11,57 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v4.2.2
         with:
-          java-version: '11'
+          java-version: '21'
           distribution: 'temurin'
           cache: maven
+      - name: Download users SDK
+        run: |
+          pwd
+          ls -l
+          export VERSION=`mvn help:evaluate -Dexpression=project.version -q -DforceStdout`
+          echo -e "VERSION=$VERSION"
+          export USERS_API_ARTIFACT_ID=`curl -L -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" -H "Authorization: Bearer ${{ secrets.GH_TOKEN }}" https://api.github.com/repos/sjexpos/ecomm-users-service/actions/artifacts | jq '.artifacts[] | "\(.id) \(.name)"' | tr -d '"' | grep users-service-api | head -n 1 | awk '{print $1}'`
+          echo -e "artifact=$USERS_API_ARTIFACT_ID"
+          curl -L -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" -H "Authorization: Bearer ${{ secrets.GH_TOKEN }}" https://api.github.com/repos/sjexpos/ecomm-users-service/actions/artifacts/$USERS_API_ARTIFACT_ID/zip > users_api_artifact.zip
+          unzip users_api_artifact.zip
+          ls -l
+          mvn install:install-file -Dfile=users-service-api-$VERSION.jar -DgroupId=io.oigres.ecomm -DartifactId=users-service-api -Dversion=$VERSION -Dpackaging=jar -DgeneratePom=true
+          rm users-service-api-$VERSION.jar
+          rm users_api_artifact.zip
+          ls -l
+          export USERS_SDK_ARTIFACT_ID=`curl -L -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" -H "Authorization: Bearer ${{ secrets.GH_TOKEN }}" https://api.github.com/repos/sjexpos/ecomm-users-service/actions/artifacts | jq '.artifacts[] | "\(.id) \(.name)"' | tr -d '"' | grep users-service-sdk | head -n 1 | awk '{print $1}'`
+          echo -e "artifact=$USERS_API_ARTIFACT_ID"
+          curl -L -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" -H "Authorization: Bearer ${{ secrets.GH_TOKEN }}" https://api.github.com/repos/sjexpos/ecomm-users-service/actions/artifacts/$USERS_SDK_ARTIFACT_ID/zip > users_sdk_artifact.zip
+          unzip users_sdk_artifact.zip
+          ls -l
+          mvn install:install-file -Dfile=users-service-sdk-$VERSION.jar -DgroupId=io.oigres.ecomm -DartifactId=users-service-sdk -Dversion=$VERSION -Dpackaging=jar -DgeneratePom=true
+          rm users-service-sdk-$VERSION.jar
+          rm users_sdk_artifact.zip
+      - name: Download products SDK
+        run: |
+          pwd
+          ls -l
+          export VERSION=`mvn help:evaluate -Dexpression=project.version -q -DforceStdout`
+          echo -e "VERSION=$VERSION"
+          export PRODUCTS_API_ARTIFACT_ID=`curl -L -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" -H "Authorization: Bearer ${{ secrets.GH_TOKEN }}" https://api.github.com/repos/sjexpos/ecomm-products-service/actions/artifacts | jq '.artifacts[] | "\(.id) \(.name)"' | tr -d '"' | grep products-service-api | head -n 1 | awk '{print $1}'`
+          echo -e "artifact=$PRODUCTS_API_ARTIFACT_ID"
+          curl -L -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" -H "Authorization: Bearer ${{ secrets.GH_TOKEN }}" https://api.github.com/repos/sjexpos/ecomm-products-service/actions/artifacts/$PRODUCTS_API_ARTIFACT_ID/zip > products_api_artifact.zip
+          unzip products_api_artifact.zip
+          ls -l
+          mvn install:install-file -Dfile=products-service-api-$VERSION.jar -DgroupId=io.oigres.ecomm -DartifactId=products-service-api -Dversion=$VERSION -Dpackaging=jar -DgeneratePom=true
+          rm products-service-api-$VERSION.jar
+          rm products_api_artifact.zip
+          ls -l
+          export PRODUCTS_SDK_ARTIFACT_ID=`curl -L -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" -H "Authorization: Bearer ${{ secrets.GH_TOKEN }}" https://api.github.com/repos/sjexpos/ecomm-products-service/actions/artifacts | jq '.artifacts[] | "\(.id) \(.name)"' | tr -d '"' | grep products-service-sdk | head -n 1 | awk '{print $1}'`
+          echo -e "artifact=$PRODUCTS_SDK_ARTIFACT_ID"
+          curl -L -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" -H "Authorization: Bearer ${{ secrets.GH_TOKEN }}" https://api.github.com/repos/sjexpos/ecomm-products-service/actions/artifacts/$PRODUCTS_SDK_ARTIFACT_ID/zip > products_sdk_artifact.zip
+          unzip products_sdk_artifact.zip
+          ls -l
+          mvn install:install-file -Dfile=products-service-sdk-$VERSION.jar -DgroupId=io.oigres.ecomm -DartifactId=products-service-sdk -Dversion=$VERSION -Dpackaging=jar -DgeneratePom=true
+          rm products-service-sdk-$VERSION.jar
+          rm products_sdk_artifact.zip
       - run: mvn --batch-mode --update-snapshots install
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4.0.1

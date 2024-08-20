@@ -20,7 +20,7 @@ import io.oigres.ecomm.service.users.api.model.consumer.GetConsumerStateTax;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;

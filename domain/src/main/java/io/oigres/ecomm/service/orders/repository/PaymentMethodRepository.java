@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import io.oigres.ecomm.service.orders.domain.PaymentMethod;
 import io.oigres.ecomm.service.orders.enums.PaymentMethodEnum;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface PaymentMethodRepository extends GenericRepository<PaymentMethod, Long> {

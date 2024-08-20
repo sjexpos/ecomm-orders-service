@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import io.oigres.ecomm.service.orders.domain.DeliveryMethod;
 import io.oigres.ecomm.service.orders.enums.DeliveryMethodEnum;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface DeliveryMethodRepository extends GenericRepository<DeliveryMethod, Long> {

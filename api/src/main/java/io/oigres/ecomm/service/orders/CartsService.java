@@ -1,6 +1,6 @@
 package io.oigres.ecomm.service.orders;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import io.oigres.ecomm.service.orders.model.CreateCartException;
 import io.oigres.ecomm.service.orders.model.NoStockException;

@@ -10,7 +10,7 @@ import io.oigres.ecomm.service.orders.DeliveryMethodsService;
 import io.oigres.ecomm.service.orders.Routes;
 import io.oigres.ecomm.service.orders.model.JacksonPageImpl;
 import io.oigres.ecomm.service.orders.model.PageResponse;
-import io.oigres.ecomm.service.orders.model.PageableRequestImpl;
+import io.oigres.ecomm.service.orders.model.PageableRequest;
 import io.oigres.ecomm.service.orders.model.cart.GetAllDeliveryMethodsResponse;
 
 import java.time.Duration;
@@ -26,7 +26,7 @@ public class DeliveryMethodServiceProxy extends MiddlewareProxy implements Deliv
     }
 
     @Override
-    public PageResponse<GetAllDeliveryMethodsResponse> getAllDeliveryMethods(PageableRequestImpl pageable) {
+    public PageResponse<GetAllDeliveryMethodsResponse> getAllDeliveryMethods(PageableRequest pageable) {
         ParameterizedTypeReference<JacksonPageImpl<GetAllDeliveryMethodsResponse>> typeReference = new ParameterizedTypeReference<>() {};
         return getWebClient().get()
                 .uri(uriBuilder -> uriBuilder

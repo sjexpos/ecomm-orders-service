@@ -6,9 +6,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import io.oigres.ecomm.service.orders.enums.OrderStatusEnum;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.Set;
 

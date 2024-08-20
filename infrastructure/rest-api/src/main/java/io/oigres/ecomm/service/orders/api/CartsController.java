@@ -9,7 +9,7 @@ import io.oigres.ecomm.service.orders.domain.PaymentMethod;
 import io.oigres.ecomm.service.orders.exception.CreateCartException;
 import io.oigres.ecomm.service.orders.model.PageResponse;
 import io.oigres.ecomm.service.orders.model.PageResponseImpl;
-import io.oigres.ecomm.service.orders.model.PageableRequestImpl;
+import io.oigres.ecomm.service.orders.model.PageableRequest;
 import io.oigres.ecomm.service.orders.model.cart.*;
 import io.oigres.ecomm.service.orders.model.carts.InsertCartRequestDTO;
 import io.oigres.ecomm.service.orders.model.carts.InsertCartResponseDTO;
@@ -30,7 +30,7 @@ import org.springframework.util.MimeTypeUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -84,7 +84,7 @@ public class CartsController extends AbstractController implements CartsService,
     @PageableAsQueryParam
     @GetMapping(value = Routes.GET_ALL_PAYMENT_METHODS, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public PageResponse<GetAllPaymentMethodsResponse> getAllPaymentMethods(@Parameter(hidden = true, required = true) PageableRequestImpl pageable) {
+    public PageResponse<GetAllPaymentMethodsResponse> getAllPaymentMethods(@Parameter(hidden = true, required = true) PageableRequest pageable) {
         log.debug("############ call getAllPaymentMethods ############");
         Page<PaymentMethod> paymentMethods = getAllPaymentMethodsUseCase.handle(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").ascending()));
         List<GetAllPaymentMethodsResponse> response =
@@ -97,7 +97,7 @@ public class CartsController extends AbstractController implements CartsService,
     @PageableAsQueryParam
     @GetMapping(value = Routes.GET_ALL_DELIVERY_METHODS, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public PageResponse<GetAllDeliveryMethodsResponse> getAllDeliveryMethods(@Parameter(hidden = true, required = true) PageableRequestImpl pageable) {
+    public PageResponse<GetAllDeliveryMethodsResponse> getAllDeliveryMethods(@Parameter(hidden = true, required = true) PageableRequest pageable) {
         log.debug("############ call getAllDeliveryMethods ############");
         Page<DeliveryMethod> deliveryMethods = getAllDeliveryMethodsUseCase.handle(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").ascending()));
         List<GetAllDeliveryMethodsResponse> response =

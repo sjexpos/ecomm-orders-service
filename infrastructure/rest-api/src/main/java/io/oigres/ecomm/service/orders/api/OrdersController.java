@@ -10,7 +10,7 @@ import io.oigres.ecomm.service.orders.exception.OrderNotFoundException;
 import io.oigres.ecomm.service.orders.model.NotFoundException;
 import io.oigres.ecomm.service.orders.model.PageResponse;
 import io.oigres.ecomm.service.orders.model.PageResponseImpl;
-import io.oigres.ecomm.service.orders.model.PageableRequestImpl;
+import io.oigres.ecomm.service.orders.model.PageableRequest;
 import io.oigres.ecomm.service.orders.model.order.*;
 import io.oigres.ecomm.service.orders.usecases.orders.changeStatus.ChangeOrderStatusUseCase;
 import io.oigres.ecomm.service.orders.usecases.orders.list.GetAllOrdersUseCase;
@@ -30,8 +30,8 @@ import org.springframework.util.MimeTypeUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
@@ -107,7 +107,7 @@ public class OrdersController extends AbstractController implements OrdersServic
             @RequestParam(name = "dispensaryId", required = false) Long dispensaryId,
             @RequestParam(name = "userId", required = false) Long userId,
             @RequestParam(name = "status", required = false) OrderStatusEnumApi status,
-            @Parameter(hidden = true, required = true) PageableRequestImpl pageable) {
+            @Parameter(hidden = true, required = true) PageableRequest pageable) {
         log.debug("############ call getAllOrders ############");
         Page<Order> orders;
         try {

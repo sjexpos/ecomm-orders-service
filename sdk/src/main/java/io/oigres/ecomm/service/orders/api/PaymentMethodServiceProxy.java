@@ -10,7 +10,7 @@ import io.oigres.ecomm.service.orders.PaymentMethodsService;
 import io.oigres.ecomm.service.orders.Routes;
 import io.oigres.ecomm.service.orders.model.JacksonPageImpl;
 import io.oigres.ecomm.service.orders.model.PageResponse;
-import io.oigres.ecomm.service.orders.model.PageableRequestImpl;
+import io.oigres.ecomm.service.orders.model.PageableRequest;
 import io.oigres.ecomm.service.orders.model.cart.GetAllPaymentMethodsResponse;
 
 import java.time.Duration;
@@ -26,7 +26,7 @@ public class PaymentMethodServiceProxy extends MiddlewareProxy implements Paymen
     }
 
     @Override
-    public PageResponse<GetAllPaymentMethodsResponse> getAllPaymentMethods(PageableRequestImpl pageable) {
+    public PageResponse<GetAllPaymentMethodsResponse> getAllPaymentMethods(PageableRequest pageable) {
         ParameterizedTypeReference<JacksonPageImpl<GetAllPaymentMethodsResponse>> typeReference = new ParameterizedTypeReference<>() {};
         return getWebClient().get()
                 .uri(uriBuilder -> uriBuilder

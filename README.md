@@ -27,18 +27,17 @@ This project has a hexagonal architecture and the modules are:
 
 ## Framework
 
-* [Spring Boot 2.7](https://spring.io/projects/spring-boot/)
-* [Spring Cloud](https://spring.io/projects/spring-cloud)
-* [Spring Data 2.7](https://spring.io/projects/spring-data)
-* [Spring Cache]()
+* [Spring Boot 3.3.2](https://spring.io/projects/spring-boot/)
+* [Spring Cloud 2023.0.3](https://spring.io/projects/spring-cloud)
+* [Spring Data 3.3.2](https://spring.io/projects/spring-data)
 * [Openapi V3](https://swagger.io/specification/)
-* [Hibernate 5.6](https://hibernate.org/orm/)
-* [Hibernate Search 6.1](https://hibernate.org/search/)
+* [Hibernate 6.6](https://hibernate.org/orm/)
+* [Hibernate Search 7.2.0](https://hibernate.org/search/)
 
 ## Requirements
 
-* [Java 11/17](https://openjdk.org/install/)
-* [Maven 3.6+](https://maven.apache.org/download.cgi)
+* [Java 21](https://openjdk.org/install/)
+* [Maven 3.8.8+](https://maven.apache.org/download.cgi)
 * [AWS Cli](https://aws.amazon.com/es/cli/)
 * [Docker](https://www.docker.com/)
 
@@ -78,7 +77,7 @@ mvn -Dtests.db.database=ecomm_orders pre-integration-test
 
 ## Swagger UI
 
-http://localhost:9090/api/api-docs.html
+http://localhost:9090/
 
 
 ## Run application from IDE

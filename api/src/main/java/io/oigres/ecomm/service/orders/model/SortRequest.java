@@ -3,6 +3,7 @@ package io.oigres.ecomm.service.orders.model;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -127,6 +128,20 @@ public class SortRequest implements Serializable {
 
 	public boolean isUnsorted() {
 		return !isSorted();
+	}
+
+	public List<Order> getOrders() {
+		return this.orders;
+	}
+
+	public SortRequest and(SortRequest sort) {
+		List<Order> these = new ArrayList<Order>(this.orders);
+
+		for (Order order : sort.orders) {
+			these.add(order);
+		}
+
+		return SortRequest.by(these);
 	}
 
 	/**

@@ -2,7 +2,7 @@ package io.oigres.ecomm.service.orders.domain;
 
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import io.oigres.ecomm.service.orders.enums.OrderStatusEnum;
 

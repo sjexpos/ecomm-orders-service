@@ -1,4 +1,4 @@
-FROM amazoncorretto:17-al2-jdk
+FROM amazoncorretto:21-al2-jdk
 
 # ENV JAVA_XMS             <set initial Java heap size>
 # ENV JAVA_XMX             <set maximum Java heap size>

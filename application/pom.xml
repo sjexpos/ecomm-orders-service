@@ -35,19 +35,45 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-tx</artifactId>
-    </dependency>    
+    </dependency>
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-commons</artifactId>
     </dependency>
+
     <dependency>
       <groupId>io.oigres.ecomm</groupId>
       <artifactId>products-service-sdk</artifactId>
     </dependency>
     <dependency>
       <groupId>io.oigres.ecomm</groupId>
+      <artifactId>products-service-api</artifactId>
+    </dependency>
+    
+    <dependency>
+      <groupId>io.oigres.ecomm</groupId>
       <artifactId>users-service-sdk</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.oigres.ecomm</groupId>
+      <artifactId>users-service-api</artifactId>
+    </dependency>
+
+<!-- They are needed because CI is getting jar artifacts from Github artifacts and it is not getting pom files. So it does not have transitive dependencies. -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webflux</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor.netty</groupId>
+      <artifactId>reactor-netty-http</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+    </dependency>
+<!-- End -->
+
   </dependencies>
 
 </project>

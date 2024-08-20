@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import io.oigres.ecomm.service.orders.domain.Order;
 import io.oigres.ecomm.service.orders.enums.OrderStatusEnum;
-import io.oigres.ecomm.service.orders.repository.OrderRepository;
 
 import java.math.BigDecimal;
 

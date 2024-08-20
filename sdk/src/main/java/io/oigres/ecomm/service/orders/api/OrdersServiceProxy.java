@@ -7,7 +7,7 @@ import io.oigres.ecomm.service.orders.OrderStatusEnumApi;
 import io.oigres.ecomm.service.orders.OrdersService;
 import io.oigres.ecomm.service.orders.Routes;
 import io.oigres.ecomm.service.orders.model.PageResponse;
-import io.oigres.ecomm.service.orders.model.PageableRequestImpl;
+import io.oigres.ecomm.service.orders.model.PageableRequest;
 import io.oigres.ecomm.service.orders.model.order.*;
 
 import java.net.URI;
@@ -42,7 +42,7 @@ public class OrdersServiceProxy extends MiddlewareProxy implements OrdersService
     // --------------------------------- getAllOrders --------------------------------- //
 
     @Override
-    public PageResponse<GetAllOrdersResponse> getAllOrders(Long dispensaryId, Long userId, OrderStatusEnumApi status, PageableRequestImpl pageable) {
+    public PageResponse<GetAllOrdersResponse> getAllOrders(Long dispensaryId, Long userId, OrderStatusEnumApi status, PageableRequest pageable) {
         return getPage(uriBuilder -> uriBuilder
                         .path(Routes.ORDERS_CONTROLLER_PATH)
                         .queryParamIfPresent("dispensaryId", Optional.ofNullable(dispensaryId))

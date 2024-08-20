@@ -3,15 +3,19 @@ package io.oigres.ecomm.service.orders.config;
 import java.util.List;
 import java.util.stream.Stream;
 
-import javax.servlet.Filter;
+import jakarta.servlet.Filter;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.data.web.PageableRequestHandlerMethodArgumentResolver;
+import org.springframework.data.web.SortRequestHandlerMethodArgumentResolver;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import io.oigres.ecomm.service.orders.web.http.LoggingRequestFilter;
 import io.oigres.ecomm.service.orders.web.http.TraceIdPropagatorFilter;
@@ -22,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Configuration
 @Slf4j
-public class WebConfiguration {
+public class WebConfiguration implements WebMvcConfigurer {
     
 	@Bean
 	public FilterRegistrationBean<LoggingRequestFilter> loggingRequestFilterRegistrationBean() {
@@ -69,5 +73,21 @@ public class WebConfiguration {
 		filterRegistrationBean.setOrder(Integer.MIN_VALUE); // Ensure first execution
 		return filterRegistrationBean;
 	}
+
+	@Override
+	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+		resolvers.add(pageableRequestResolver());
+		resolvers.add(sortRequestResolver());
+	}
+
+	public PageableRequestHandlerMethodArgumentResolver pageableRequestResolver() {
+		return new PageableRequestHandlerMethodArgumentResolver();
+	}
+
+	public SortRequestHandlerMethodArgumentResolver sortRequestResolver() {
+		return new SortRequestHandlerMethodArgumentResolver();
+	}
+
+
 
 }
