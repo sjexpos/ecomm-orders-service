@@ -8,15 +8,15 @@ import io.oigres.ecomm.service.orders.model.cart.InsertCartRequest;
 import io.oigres.ecomm.service.orders.model.cart.InsertCartResponse;
 
 import java.time.Duration;
-import java.util.function.Supplier;
 
 public class CartsServiceProxy extends MiddlewareProxy implements CartsService {
-    public CartsServiceProxy(WebClient webClient, Supplier<String> traceIdExtractor) {
-        super(webClient, traceIdExtractor);
+
+    public CartsServiceProxy(WebClient webClient) {
+        super(webClient);
     }
 
-    public CartsServiceProxy(final String baseUri, final Supplier<String> traceIdExtractor) {
-        super(baseUri, Duration.ofMillis(2000), traceIdExtractor);
+    public CartsServiceProxy(final String baseUri) {
+        super(baseUri, Duration.ofMillis(2000));
     }
 
     @Override

@@ -5,7 +5,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import io.oigres.ecomm.service.orders.Constants;
 import io.oigres.ecomm.service.orders.PaymentMethodsService;
 import io.oigres.ecomm.service.orders.Routes;
 import io.oigres.ecomm.service.orders.model.JacksonPageImpl;
@@ -14,15 +13,14 @@ import io.oigres.ecomm.service.orders.model.PageableRequest;
 import io.oigres.ecomm.service.orders.model.cart.GetAllPaymentMethodsResponse;
 
 import java.time.Duration;
-import java.util.function.Supplier;
 
 public class PaymentMethodServiceProxy extends MiddlewareProxy implements PaymentMethodsService {
-    public PaymentMethodServiceProxy(WebClient webClient, Supplier<String> traceIdExtractor) {
-        super(webClient, traceIdExtractor);
+    public PaymentMethodServiceProxy(WebClient webClient) {
+        super(webClient);
     }
 
-    public PaymentMethodServiceProxy(final String baseUri, final Supplier<String> traceIdExtractor) {
-        super(baseUri, Duration.ofMillis(2000), traceIdExtractor);
+    public PaymentMethodServiceProxy(final String baseUri) {
+        super(baseUri, Duration.ofMillis(2000));
     }
 
     @Override
@@ -35,7 +33,6 @@ public class PaymentMethodServiceProxy extends MiddlewareProxy implements Paymen
                         .queryParam("size", pageable.getPageSize())
                         .build(pageable)
                 )
-                .header(Constants.HTTP_HEADER_DISTRIBUTED_TRACE_ID, getTraceIdExtractor().get())
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()

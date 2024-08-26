@@ -1,6 +1,6 @@
 
 server:
-  port: 9090
+  port: 9094
   tomcat:
     max-connections: 2000 # Maximum connections
     accept-count: 200     # Maximum waiting number
@@ -17,7 +17,7 @@ spring:
     virtual:
       enabled: true
   application:
-    name: orders-service
+    name: orders-srv
   cache:
     type: redis
     redis:
@@ -90,6 +90,10 @@ spring:
 #                type: static
 #                access_key_id: <value>
 #                secret_access_key: <value>
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
 management:
   server:
@@ -110,6 +114,12 @@ management:
   health:
     elasticsearch:
       enabled: false # if we need health check, we need to create a health indicator which will use the connection form hibernate search
+  tracing:
+    sampling:
+      probability: 1.0
+
+tracing:
+  url: http://localhost:4318/v1/traces
 
 springdoc:
   show-actuator: false
@@ -123,7 +133,7 @@ springdoc:
 
 logging:
   pattern:
-    console: '%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%-5p) [%clr(%18.18t){faint}] [%clr(%32X{X-EComm-Trace-Id}){blue}] %clr(%40.40logger{5.10}:%-4L){cyan} : %m %n'
+    console: '%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%-5p) [${spring.application.name}] [%clr(%15.15t){faint}] [%clr(%32X{traceId}-%16X{spanId}){blue}] %clr(%40.40logger{5.10}:%-4L){cyan} : %m %n'
   level:
     io.oigres.ecomm.service.products: INFO
 #    org.hibernate.SQL: DEBUG
@@ -141,7 +151,7 @@ ecomm:
       name: EComm
       version: ${project.version}
     products:
-      baseUri: http://localhost:9090/api
+      baseUri: http://localhost:9090
     users:
-      baseUri: http://localhost:9090/api
+      baseUri: http://localhost:9090
 

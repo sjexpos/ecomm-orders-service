@@ -18,7 +18,6 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import io.oigres.ecomm.service.orders.web.http.LoggingRequestFilter;
-import io.oigres.ecomm.service.orders.web.http.TraceIdPropagatorFilter;
 
 import org.springframework.web.cors.CorsConfiguration;
 
@@ -34,17 +33,7 @@ public class WebConfiguration implements WebMvcConfigurer {
 		LoggingRequestFilter filter = new LoggingRequestFilter();
 		registrationBean.setFilter(filter);
 		registrationBean.addUrlPatterns("*");
-		registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE+1);
-		return registrationBean;
-	}
-	
-	@Bean
-	public FilterRegistrationBean<TraceIdPropagatorFilter> requestIDPropagatorFilterRegistrationBean() {
-		FilterRegistrationBean<TraceIdPropagatorFilter> registrationBean = new FilterRegistrationBean<TraceIdPropagatorFilter>();
-		TraceIdPropagatorFilter filter = new TraceIdPropagatorFilter();
-		registrationBean.setFilter(filter);
-		registrationBean.addUrlPatterns("*");
-		registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+		registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE-1);
 		return registrationBean;
 	}
 	
@@ -87,7 +76,5 @@ public class WebConfiguration implements WebMvcConfigurer {
 	public SortRequestHandlerMethodArgumentResolver sortRequestResolver() {
 		return new SortRequestHandlerMethodArgumentResolver();
 	}
-
-
 
 }

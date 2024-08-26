@@ -1,16 +1,13 @@
 package io.oigres.ecomm.service.orders.config;
 
-import io.oigres.ecomm.service.products.Constants;
 import io.oigres.ecomm.service.products.api.StockTransactionServiceProxy;
 import io.oigres.ecomm.service.products.model.StockTransactionsService;
 import io.oigres.ecomm.service.users.api.UsersService;
 import io.oigres.ecomm.service.users.api.UsersServiceProxy;
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.function.Supplier;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class RemoteServicesConfiguration {
@@ -20,16 +17,13 @@ public class RemoteServicesConfiguration {
     private String usersBaseUri;
 
     @Bean
-    public StockTransactionsService stockTransactionService() {
-        return new StockTransactionServiceProxy(productsBaseUri, traceIdExtractor());
+    public StockTransactionsService stockTransactionService(WebClient.Builder builder) {
+        return new StockTransactionServiceProxy(builder.baseUrl(productsBaseUri).build());
     }
 
     @Bean
-    public UsersService asyncConsumerUsersService() {
-        return new UsersServiceProxy(usersBaseUri, traceIdExtractor());
+    public UsersService asyncConsumerUsersService(WebClient.Builder builder) {
+        return new UsersServiceProxy(builder.baseUrl(usersBaseUri).build());
     }
 
-    private Supplier<String> traceIdExtractor() {
-        return () -> MDC.get(Constants.HTTP_HEADER_DISTRIBUTED_TRACE_ID);
-    }
 }

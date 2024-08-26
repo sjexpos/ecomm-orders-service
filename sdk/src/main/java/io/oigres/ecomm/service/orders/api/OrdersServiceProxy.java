@@ -15,15 +15,15 @@ import java.time.Duration;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class OrdersServiceProxy extends MiddlewareProxy implements OrdersService, AsyncOrdersService {
-    public OrdersServiceProxy(WebClient webClient, Supplier<String> traceIdExtractor) {
-        super(webClient, traceIdExtractor);
+
+    public OrdersServiceProxy(WebClient webClient) {
+        super(webClient);
     }
 
-    public OrdersServiceProxy(final String baseUri, final Supplier<String> traceIdExtractor) {
-        super(baseUri, Duration.ofMillis(2000), traceIdExtractor);
+    public OrdersServiceProxy(final String baseUri) {
+        super(baseUri, Duration.ofMillis(2000));
     }
 
     // --------------------------------- getOrderById --------------------------------- //
