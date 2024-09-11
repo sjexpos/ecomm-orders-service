@@ -1,5 +1,6 @@
 package io.oigres.ecomm.service.orders.web;
 
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import io.oigres.ecomm.service.orders.domain.DomainException;
 import io.oigres.ecomm.service.orders.model.CreateCartException;
 import io.oigres.ecomm.service.orders.model.StockTimeOutException;
@@ -35,7 +36,7 @@ import java.util.Map;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    private BasicErrorController basicErrorController;
+    private final BasicErrorController basicErrorController;
 
     public GlobalExceptionHandler(BasicErrorController basicErrorController) {
         super();
@@ -78,6 +79,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                         .path("")
                         .build(),
                 status);
+    }
+
+    @ExceptionHandler(RequestNotPermitted.class)
+    public ResponseEntity<Object> handleRequestNotPermitted(RequestNotPermitted ex, HttpServletRequest request) {
+        logger.warn("RATE LIMIT EXCEEDED: " + ex.getMessage());
+        return customHandleException(HttpStatus.TOO_MANY_REQUESTS, ex, request);
     }
 
     @ExceptionHandler({DataIntegrityViolationException.class, JpaObjectRetrievalFailureException.class})

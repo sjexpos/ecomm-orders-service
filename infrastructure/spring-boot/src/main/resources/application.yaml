@@ -110,6 +110,8 @@ management:
   health:
     elasticsearch:
       enabled: false # if we need health check, we need to create a health indicator which will use the connection form hibernate search
+    ratelimiters:
+      enabled: true
   tracing:
     sampling:
       probability: 1.0
@@ -123,6 +125,15 @@ springdoc:
     path: /
     operationsSorter: method
     disable-swagger-default-url: true
+
+#resilience4j:
+#  ratelimiter:
+#    instances:
+#      get-all-orders-endpoint: # 200 requests per minute
+#        limit-for-period: 200
+#        limit-refresh-period: 60s
+#        timeout-duration: 2s # blocks by 2 seconds the request which exceeded the limit
+#        register-health-indicator: true
 
 logging:
   pattern:
