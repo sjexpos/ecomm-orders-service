@@ -14,7 +14,7 @@ import lombok.Data;
 public class TracingConfiguration {
 
     @Data
-    @ConfigurationProperties(prefix = "tracing") // it's not working 
+    @ConfigurationProperties(prefix = "ecomm.service.tracing") // it's not working
     public static class TracingProperties {
         @NotNull
         @NotBlank
@@ -22,7 +22,7 @@ public class TracingConfiguration {
     }
 
     @Bean
-    public OtlpHttpSpanExporter otlpHttpSpanExporter(@Value("${tracing.url}") String url) {
+    public OtlpHttpSpanExporter otlpHttpSpanExporter(@Value("${ecomm.service.tracing.url}") String url) {
         return OtlpHttpSpanExporter.builder()
             .setEndpoint(url)
             .build();

@@ -1,6 +1,6 @@
 
 server:
-  port: 9094
+  port: 6063
   tomcat:
     max-connections: 2000 # Maximum connections
     accept-count: 200     # Maximum waiting number
@@ -90,10 +90,6 @@ spring:
 #                type: static
 #                access_key_id: <value>
 #                secret_access_key: <value>
-  kafka:
-    bootstrap-servers: localhost:9092
-    producer:
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
 management:
   server:
@@ -117,9 +113,6 @@ management:
   tracing:
     sampling:
       probability: 1.0
-
-tracing:
-  url: http://localhost:4318/v1/traces
 
 springdoc:
   show-actuator: false
@@ -151,7 +144,10 @@ ecomm:
       name: EComm
       version: ${project.version}
     products:
-      baseUri: http://localhost:9090
+      baseUri: http://localhost:6062
     users:
-      baseUri: http://localhost:9090
+      baseUri: http://localhost:6061
+    tracing:
+      url: http://localhost:4318/v1/traces
+
 

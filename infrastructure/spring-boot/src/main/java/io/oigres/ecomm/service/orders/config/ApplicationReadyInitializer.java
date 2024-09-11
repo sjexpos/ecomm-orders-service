@@ -54,6 +54,12 @@ public class ApplicationReadyInitializer implements ApplicationListener<Applicat
 		log.info("------------------------ Redis --------------------------");
         log.info("Redisson config: {}", environment.getProperty("spring.jpa.properties.hibernate.cache.redisson.config"));
 		new ConfigPrinter().print(log, environment.getProperty("spring.jpa.properties.hibernate.cache.redisson.config"));
+		log.info("-------------------------- Tracing ----------------------");
+		log.info("URL: {}", environment.getProperty("ecomm.service.tracing.url"));
+		log.info("------------------------ Users service ----------------------");
+		log.info("URL: {}", environment.getProperty("ecomm.service.users.baseUri"));
+		log.info("----------------------- Products service ----------------------");
+		log.info("URL: {}", environment.getProperty("ecomm.service.products.baseUri"));
         log.info("********************************************************************");
         log.info("");
 	}
