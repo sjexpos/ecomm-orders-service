@@ -32,6 +32,9 @@ spring:
       ssl: 
         enabled: false
       timeout: 1000
+  cloud:
+    discovery:
+      enabled: false
   datasource:
     host: localhost
     port: 5432
@@ -112,6 +115,8 @@ management:
       enabled: false # if we need health check, we need to create a health indicator which will use the connection form hibernate search
     ratelimiters:
       enabled: true
+    circuitbreakers:
+      enabled: true
   tracing:
     sampling:
       probability: 1.0
@@ -126,7 +131,7 @@ springdoc:
     operationsSorter: method
     disable-swagger-default-url: true
 
-#resilience4j:
+resilience4j:
 #  ratelimiter:
 #    instances:
 #      get-all-orders-endpoint: # 200 requests per minute
@@ -134,6 +139,38 @@ springdoc:
 #        limit-refresh-period: 60s
 #        timeout-duration: 2s # blocks by 2 seconds the request which exceeded the limit
 #        register-health-indicator: true
+  retry:
+    instances:
+      remote-insert-stock-transactions:
+        # Maximum number of attempts (including the initial call as the first attempt)
+        max-attempts: 3
+        # Fixed wait duration between retry attempts
+        wait-duration: 1s
+        retry-exceptions:
+          - org.springframework.web.client.HttpServerErrorException
+        ignore-exceptions:
+          - io.oigres.ecomm.service.products.model.exception.NotFoundException
+          - io.oigres.ecomm.service.products.model.exception.NoStockException
+          - io.oigres.ecomm.service.products.model.exception.StockTimeOutException
+        # throwing of MaxRetriesExceededException when the Retry has reached the configured maxAttempts
+        fail-after-max-retries: true
+      remote-200-expected:
+        # Maximum number of attempts (including the initial call as the first attempt)
+        max-attempts: 3
+        # Fixed wait duration between retry attempts
+        wait-duration: 1s
+        fail-after-max-retries: true
+  circuitbreaker:
+    instances:
+      remote-gets:
+        sliding-window-type: COUNT_BASED
+        failure-rate-threshold: 50
+        minimum-number-of-calls: 5
+        automatic-transition-from-open-to-half-open-enabled: true
+        wait-duration-in-open-state: 5s
+        permitted-number-of-calls-in-half-open-state: 3
+        sliding-window-size: 10
+        register-health-indicator: true
 
 logging:
   pattern:

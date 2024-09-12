@@ -1,5 +1,7 @@
 package io.oigres.ecomm.service.orders.config;
 
+import io.oigres.ecomm.service.orders.rpc.StockTransactionsServiceProxyEnhanced;
+import io.oigres.ecomm.service.orders.rpc.UsersServiceProxyEnhanced;
 import io.oigres.ecomm.service.products.api.StockTransactionServiceProxy;
 import io.oigres.ecomm.service.products.model.StockTransactionsService;
 import io.oigres.ecomm.service.users.api.UsersService;
@@ -11,19 +13,21 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class RemoteServicesConfiguration {
-    @Value("${ecomm.service.products.baseUri}")
-    private String productsBaseUri;
-    @Value("${ecomm.service.users.baseUri}")
-    private String usersBaseUri;
 
     @Bean
-    public StockTransactionsService stockTransactionService(WebClient.Builder builder) {
-        return new StockTransactionServiceProxy(builder.baseUrl(productsBaseUri).build());
+    public StockTransactionsService stockTransactionService(
+            WebClient.Builder builder,
+            @Value("${ecomm.service.products.baseUri}") String productsBaseUri
+    ) {
+        return new StockTransactionsServiceProxyEnhanced(new StockTransactionServiceProxy(builder.baseUrl(productsBaseUri).build()));
     }
 
     @Bean
-    public UsersService asyncConsumerUsersService(WebClient.Builder builder) {
-        return new UsersServiceProxy(builder.baseUrl(usersBaseUri).build());
+    public UsersService asyncConsumerUsersService(
+            WebClient.Builder builder,
+            @Value("${ecomm.service.users.baseUri}") String usersBaseUri
+    ) {
+        return new UsersServiceProxyEnhanced(new UsersServiceProxy(builder.baseUrl(usersBaseUri).build()));
     }
 
 }
