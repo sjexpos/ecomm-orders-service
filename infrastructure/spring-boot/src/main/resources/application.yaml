@@ -118,6 +118,7 @@ management:
     circuitbreakers:
       enabled: true
   tracing:
+    enabled: true
     sampling:
       probability: 1.0
 
@@ -132,13 +133,6 @@ springdoc:
     disable-swagger-default-url: true
 
 resilience4j:
-#  ratelimiter:
-#    instances:
-#      get-all-orders-endpoint: # 200 requests per minute
-#        limit-for-period: 200
-#        limit-refresh-period: 60s
-#        timeout-duration: 2s # blocks by 2 seconds the request which exceeded the limit
-#        register-health-indicator: true
   retry:
     instances:
       remote-insert-stock-transactions:

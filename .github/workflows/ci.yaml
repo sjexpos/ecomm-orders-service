@@ -68,10 +68,23 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
       - name: Upload artifacts
+        id: upload-compiled-sources
         uses: actions/upload-artifact@v4.3.3
         with:
           name: compiled-sources
           path: ./
+      - name: Publish orders-service-api
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: orders-service-api
+          path: ./api/target/orders-service-api-0.1.0-SNAPSHOT.jar
+      - name: Publish orders-service-sdk
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: orders-service-sdk
+          path: ./sdk/target/orders-service-sdk-0.1.0-SNAPSHOT.jar
+    outputs:
+      compiled-sources-artifact-id: ${{ steps.upload-compiled-sources.outputs.artifact-id }}
 
   build-docker-image:
     name: Create docker image
@@ -100,5 +113,20 @@ jobs:
           platforms: linux/amd64
           push: false
           tags: sjexpos/ecomm-orders-service:latest
+
+  delete-unused-artifact:
+    name: Delete unused artifact
+    needs: [build-app, build-docker-image]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete Artifact
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.actions.deleteArtifact({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              artifact_id: ${{ needs.build-app.outputs.compiled-sources-artifact-id }}
+            });
 
 # mvn jacoco:prepare-agent jacoco:report surefire:test
