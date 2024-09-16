@@ -7,6 +7,7 @@
 [![Issues](https://img.shields.io/github/issues-search/sjexpos/ecomm-orders-service?query=is%3Aopen&label=issues&style=plastic)](https://github.com/sjexpos/ecomm-orders-service/issues)
 [![Commits](https://img.shields.io/github/last-commit/sjexpos/ecomm-orders-service?logo=github&style=plastic)](https://github.com/sjexpos/ecomm-orders-service/commits/)
 
+![](docs/images/arch-orders.png)
 
 This microservice is responsible for ...
 

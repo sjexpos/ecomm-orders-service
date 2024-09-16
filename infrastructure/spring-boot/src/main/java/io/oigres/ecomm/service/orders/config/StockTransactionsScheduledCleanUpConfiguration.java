@@ -9,8 +9,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import io.oigres.ecomm.service.orders.usecases.carts.cleanUp.CleanUpStockTransactionUseCase;
 
 @Configuration
-@EnableScheduling
-@EnableAsync
 public class StockTransactionsScheduledCleanUpConfiguration {
     private final CleanUpStockTransactionUseCase cleanUpStockTransactionUseCase;
 
