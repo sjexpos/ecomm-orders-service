@@ -16,7 +16,7 @@ public interface OrdersService {
 
     PageResponse<GetAllOrdersResponse> getAllOrders(Long dispensaryId, Long userId, OrderStatusEnumApi status, @Parameter(hidden = true, required = true) PageableRequest pageable);
 
-    OrdersCountResponse getOrdersCount(String status);
+    OrdersCountResponse getOrdersCount(Long dispensaryId, Long userId, OrderStatusEnumApi status);
 
     ChangeCurrentOrderStatusResponse changeOrderStatus(
             @Parameter(name = "orderId", required = true, description = "identifier associated with the order (0..N)") @Min(value = 1, message = "orderId should be greater than zero") long orderId,

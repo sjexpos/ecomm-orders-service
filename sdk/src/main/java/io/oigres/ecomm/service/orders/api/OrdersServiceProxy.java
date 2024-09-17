@@ -9,11 +9,11 @@ import io.oigres.ecomm.service.orders.Routes;
 import io.oigres.ecomm.service.orders.model.PageResponse;
 import io.oigres.ecomm.service.orders.model.PageableRequest;
 import io.oigres.ecomm.service.orders.model.order.*;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.time.Duration;
 import java.util.Optional;
-import java.util.concurrent.Future;
 import java.util.function.Function;
 
 public class OrdersServiceProxy extends MiddlewareProxy implements OrdersService, AsyncOrdersService {
@@ -57,20 +57,23 @@ public class OrdersServiceProxy extends MiddlewareProxy implements OrdersService
 
     // --------------------------------- getOrdersCount --------------------------------- //
 
-    private Function<UriBuilder, URI> getOrdersCount_Call(String status) {
+    private Function<UriBuilder, URI> getOrdersCount_Call(Long dispensaryId, Long userId, OrderStatusEnumApi status) {
         return uriBuilder -> uriBuilder
                 .path(Routes.ORDERS_CONTROLLER_PATH.concat(Routes.GET_TOTAL_ORDERS))
+                .queryParamIfPresent("dispensaryId", Optional.ofNullable(dispensaryId))
+                .queryParamIfPresent("userId", Optional.ofNullable(userId))
+                .queryParamIfPresent("status", Optional.ofNullable(status))
                 .build(status);
     }
 
     @Override
-    public OrdersCountResponse getOrdersCount(String status) {
-        return get(getOrdersCount_Call(status), OrdersCountResponse.class);
+    public OrdersCountResponse getOrdersCount(Long dispensaryId, Long userId, OrderStatusEnumApi status) {
+        return get(getOrdersCount_Call(dispensaryId, userId, status), OrdersCountResponse.class);
     }
 
     @Override
-    public Future<OrdersCountResponse> getOrdersCountAsync(String status) {
-        return getAsync(getOrdersCount_Call(status), OrdersCountResponse.class);
+    public Mono<OrdersCountResponse> getOrdersCountAsync(Long dispensaryId, Long userId, OrderStatusEnumApi status) {
+        return getAsync(getOrdersCount_Call(dispensaryId, userId, status), OrdersCountResponse.class);
     }
 
     // --------------------------------- changeOrderStatus --------------------------------- //

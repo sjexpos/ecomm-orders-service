@@ -1,9 +1,11 @@
 package io.oigres.ecomm.service.orders.api;
 
-import java.util.concurrent.Future;
-
+import io.oigres.ecomm.service.orders.OrderStatusEnumApi;
 import io.oigres.ecomm.service.orders.model.order.OrdersCountResponse;
+import reactor.core.publisher.Mono;
 
 public interface AsyncOrdersService {
-    Future<OrdersCountResponse> getOrdersCountAsync(String status);
+
+    Mono<OrdersCountResponse> getOrdersCountAsync(Long dispensaryId, Long userId, OrderStatusEnumApi status);
+
 }

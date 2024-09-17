@@ -140,11 +140,15 @@ public class OrdersController extends AbstractController implements OrdersServic
     @PageableAsQueryParam
     @GetMapping(value = Routes.GET_TOTAL_ORDERS, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public OrdersCountResponse getOrdersCount(@RequestParam(name = "status", required = false) String status) {
+    public OrdersCountResponse getOrdersCount(
+            @RequestParam(name = "dispensaryId", required = false) Long dispensaryId,
+            @RequestParam(name = "userId", required = false) Long userId,
+            @RequestParam(name = "status", required = false) OrderStatusEnumApi status
+    ) {
         log.debug("############ call getOrdersCount ############");
         BigDecimal total;
         try {
-            total = getOrdersCountUseCase.getOrdersCount(status);
+            total = getOrdersCountUseCase.getOrdersCount(status.name());
         } catch (io.oigres.ecomm.service.orders.exception.NotFoundException e) {
             return OrdersCountResponse.builder().total(BigDecimal.ZERO).build();
         }

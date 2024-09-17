@@ -25,7 +25,11 @@ public class SortRequest implements Serializable {
 
 	private final List<Order> orders;
 
-	protected SortRequest(List<Order> orders) {
+	public SortRequest() {
+		this(List.of());
+	}
+
+	public SortRequest(List<Order> orders) {
 		this.orders = orders;
 	}
 

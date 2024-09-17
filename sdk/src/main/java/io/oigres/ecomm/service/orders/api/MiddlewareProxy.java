@@ -10,15 +10,12 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Future;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
@@ -173,15 +170,15 @@ public class MiddlewareProxy implements InvocationHandler {
         return get(uriFunction, typeReference);
     }
 
-    public <T> Future<T> getAsync(Function<UriBuilder, URI> uriFunction, Class<T> responseClass) {
-        return (Future<T>)makeGet(getWebClient().get().uri(uriFunction), responseClass).toFuture();
+    public <T> Mono<T> getAsync(Function<UriBuilder, URI> uriFunction, Class<T> responseClass) {
+        return makeGet(getWebClient().get().uri(uriFunction), responseClass);
     }
 
-    public <T> Future<T> getAsync(Function<UriBuilder, URI> uriFunction, ParameterizedTypeReference<T> responseTypeRef) {
-        return (Future<T>)makeGet(getWebClient().get().uri(uriFunction), responseTypeRef).toFuture();
+    public <T> Mono<T> getAsync(Function<UriBuilder, URI> uriFunction, ParameterizedTypeReference<T> responseTypeRef) {
+        return makeGet(getWebClient().get().uri(uriFunction), responseTypeRef);
     }
 
-    public <T> Future<? extends PageResponse<T>> getPageAsync(Function<UriBuilder, URI> uriFunction, Class<T> responseClass) {
+    public <T> Mono<? extends PageResponse<T>> getPageAsync(Function<UriBuilder, URI> uriFunction, Class<T> responseClass) {
         ParameterizedTypeReference<JacksonPageImpl<T>> typeReference = new ParameterizedTypeReference<JacksonPageImpl<T>>() {};
         return getAsync(uriFunction, typeReference);
     }
@@ -194,12 +191,12 @@ public class MiddlewareProxy implements InvocationHandler {
         return (T)makePost(getWebClient().post().uri(uriFunction), requestData, responseTypeRef).block();
     }
 
-    public <T> Future<T> postAsync(Function<UriBuilder, URI> uriFunction, Object requestData, Class<T> elementClass) {
-        return (Future<T>)makePost(getWebClient().post().uri(uriFunction), requestData, elementClass).toFuture();
+    public <T> Mono<T> postAsync(Function<UriBuilder, URI> uriFunction, Object requestData, Class<T> elementClass) {
+        return makePost(getWebClient().post().uri(uriFunction), requestData, elementClass);
     }
 
-    public <T> Future<T> postAsync(Function<UriBuilder, URI> uriFunction, Object requestData, ParameterizedTypeReference<T> responseTypeRef) {
-        return (Future<T>)makePost(getWebClient().post().uri(uriFunction), requestData, responseTypeRef).toFuture();
+    public <T> Mono<T> postAsync(Function<UriBuilder, URI> uriFunction, Object requestData, ParameterizedTypeReference<T> responseTypeRef) {
+        return makePost(getWebClient().post().uri(uriFunction), requestData, responseTypeRef);
     }
 
 
@@ -213,12 +210,12 @@ public class MiddlewareProxy implements InvocationHandler {
         return (T)makePut(getWebClient().put().uri(uriFunction), requestData, responseTypeRef).block();
     }
 
-    public <T> Future<T> putAsync(Function<UriBuilder, URI> uriFunction, Object requestData, Class<T> elementClass) {
-        return (Future<T>)makePut(getWebClient().put().uri(uriFunction), requestData, elementClass).toFuture();
+    public <T> Mono<T> putAsync(Function<UriBuilder, URI> uriFunction, Object requestData, Class<T> elementClass) {
+        return makePut(getWebClient().put().uri(uriFunction), requestData, elementClass);
     }
 
-    public <T> Future<T> putAsync(Function<UriBuilder, URI> uriFunction, Object requestData, ParameterizedTypeReference<T> responseTypeRef) {
-        return (Future<T>)makePut(getWebClient().put().uri(uriFunction), requestData, responseTypeRef).toFuture();
+    public <T> Mono<T> putAsync(Function<UriBuilder, URI> uriFunction, Object requestData, ParameterizedTypeReference<T> responseTypeRef) {
+        return makePut(getWebClient().put().uri(uriFunction), requestData, responseTypeRef);
     }
 
 
@@ -231,12 +228,12 @@ public class MiddlewareProxy implements InvocationHandler {
         return (T)makeGet(getWebClient().delete().uri(uriFunction), responseTypeRef).block();
     }
 
-    public <T> Future<T> deleteAsync(Function<UriBuilder, URI> uriFunction, Class<T> responseClass) {
-        return (Future<T>)makeDelete(getWebClient().delete().uri(uriFunction), responseClass).toFuture();
+    public <T> Mono<T> deleteAsync(Function<UriBuilder, URI> uriFunction, Class<T> responseClass) {
+        return makeDelete(getWebClient().delete().uri(uriFunction), responseClass);
     }
 
-    public <T> Future<T> deleteAsync(Function<UriBuilder, URI> uriFunction, ParameterizedTypeReference<T> responseTypeRef) {
-        return (Future<T>)makeDelete(getWebClient().delete().uri(uriFunction), responseTypeRef).toFuture();
+    public <T> Mono<T> deleteAsync(Function<UriBuilder, URI> uriFunction, ParameterizedTypeReference<T> responseTypeRef) {
+        return makeDelete(getWebClient().delete().uri(uriFunction), responseTypeRef);
     }
 
 
@@ -253,12 +250,12 @@ public class MiddlewareProxy implements InvocationHandler {
         return (T)makePatch(getWebClient().patch().uri(uriFunction), requestData, responseTypeRef).block();
     }
 
-    public <T> Future<T> patchAsync(Function<UriBuilder, URI> uriFunction, Object requestData, Class<T> elementClass) {
-        return (Future<T>)makePatch(getWebClient().patch().uri(uriFunction), requestData, elementClass).toFuture();
+    public <T> Mono<T> patchAsync(Function<UriBuilder, URI> uriFunction, Object requestData, Class<T> elementClass) {
+        return makePatch(getWebClient().patch().uri(uriFunction), requestData, elementClass);
     }
 
-    public <T> Future<T> patchAsync(Function<UriBuilder, URI> uriFunction, Object requestData, ParameterizedTypeReference<T> responseTypeRef) {
-        return (Future<T>)makePatch(getWebClient().patch().uri(uriFunction), requestData, responseTypeRef).toFuture();
+    public <T> Mono<T> patchAsync(Function<UriBuilder, URI> uriFunction, Object requestData, ParameterizedTypeReference<T> responseTypeRef) {
+        return makePatch(getWebClient().patch().uri(uriFunction), requestData, responseTypeRef);
     }
 
 
@@ -297,12 +294,7 @@ public class MiddlewareProxy implements InvocationHandler {
     }
 
     public Mono<Exception> error5xxHandling(ClientResponse clientResponse) {
-        return clientResponse.bodyToMono(String.class).contextCapture()
-                            .flatMap(this::error5xxHandling);
-    }
-
-    private Mono<Exception> error5xxHandling(String errorBody) {
-        return  Mono.error(new RuntimeException(Constants.ERROR_500_USER_MESSAGE));
+        return  Mono.error(new RemoteServiceUnavailableException(Constants.ERROR_500_USER_MESSAGE));
     }
 
     @Override
