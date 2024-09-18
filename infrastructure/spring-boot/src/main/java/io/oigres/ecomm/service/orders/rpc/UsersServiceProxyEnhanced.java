@@ -10,6 +10,7 @@ import io.oigres.ecomm.service.users.api.model.exception.*;
 import io.oigres.ecomm.service.users.api.model.exception.profile.ProfileEnableStatusExceptionResponseApi;
 import io.oigres.ecomm.service.users.api.model.exception.profile.ProfileException;
 import io.oigres.ecomm.service.users.api.model.exception.profile.ProfileNotFoundException;
+import io.oigres.ecomm.service.users.api.model.exception.profile.ProfileTypeNotFoundException;
 import io.oigres.ecomm.service.users.api.model.profile.ActiveStatusProfileResponse;
 
 public class UsersServiceProxyEnhanced implements UsersService {
@@ -27,17 +28,17 @@ public class UsersServiceProxyEnhanced implements UsersService {
     }
 
     @Override
-    public CreateAdminUserResponse createNewAdminUser(CreateAdminUserRequest request) throws ProfileException {
+    public CreateAdminUserResponse createNewAdminUser(CreateAdminUserRequest request) throws ProfileException, ProfileTypeNotFoundException {
         return delegate.createNewAdminUser(request);
     }
 
     @Override
-    public CreateConsumerUserResponse createNewConsumerUser(CreateConsumerUserRequest request) throws ProfileException, StateNotFoundException, GenderNotFoundException, ZipcodeNotFoundException, UserTypeNotFoundException {
+    public CreateConsumerUserResponse createNewConsumerUser(CreateConsumerUserRequest request) throws ProfileException, StateNotFoundException, GenderNotFoundException, ZipcodeNotFoundException, UserTypeNotFoundException, ProfileTypeNotFoundException {
         return delegate.createNewConsumerUser(request);
     }
 
     @Override
-    public CreateDispensaryUserResponse createNewDispensaryUser(CreateDispensaryUserRequest request) throws ProfileException {
+    public CreateDispensaryUserResponse createNewDispensaryUser(CreateDispensaryUserRequest request) throws ProfileException, ProfileTypeNotFoundException {
         return delegate.createNewDispensaryUser(request);
     }
 
@@ -131,12 +132,12 @@ public class UsersServiceProxyEnhanced implements UsersService {
     }
 
     @Override
-    public ActiveStatusProfileResponse activateAdmin(Long userId) throws ProfileException {
+    public ActiveStatusProfileResponse activateAdmin(Long userId) throws ProfileException, ProfileTypeNotFoundException, ProfileNotFoundException {
         return delegate.activateAdmin(userId);
     }
 
     @Override
-    public ActiveStatusProfileResponse deactivateAdmin(Long userId) throws ProfileException {
+    public ActiveStatusProfileResponse deactivateAdmin(Long userId) throws ProfileException, ProfileTypeNotFoundException, ProfileNotFoundException {
         return delegate.deactivateAdmin(userId);
     }
 

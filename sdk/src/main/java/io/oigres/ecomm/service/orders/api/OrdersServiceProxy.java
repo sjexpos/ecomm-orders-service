@@ -14,6 +14,7 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 public class OrdersServiceProxy extends MiddlewareProxy implements OrdersService, AsyncOrdersService {
@@ -72,7 +73,7 @@ public class OrdersServiceProxy extends MiddlewareProxy implements OrdersService
     }
 
     @Override
-    public Mono<OrdersCountResponse> getOrdersCountAsync(Long dispensaryId, Long userId, OrderStatusEnumApi status) {
+    public CompletableFuture<OrdersCountResponse> getOrdersCountAsync(Long dispensaryId, Long userId, OrderStatusEnumApi status) {
         return getAsync(getOrdersCount_Call(dispensaryId, userId, status), OrdersCountResponse.class);
     }
 

@@ -6,7 +6,6 @@ import io.oigres.ecomm.service.products.model.exception.NoStockException;
 import io.oigres.ecomm.service.products.model.exception.NotFoundException;
 import io.oigres.ecomm.service.products.model.exception.StockTimeOutException;
 import io.oigres.ecomm.service.products.model.stockTransactions.*;
-import io.oigres.ecomm.service.users.api.model.GetUserResponse;
 
 import java.util.List;
 
