@@ -7,6 +7,9 @@
 [![Issues](https://img.shields.io/github/issues-search/sjexpos/ecomm-orders-service?query=is%3Aopen&label=issues&style=plastic)](https://github.com/sjexpos/ecomm-orders-service/issues)
 [![Commits](https://img.shields.io/github/last-commit/sjexpos/ecomm-orders-service?logo=github&style=plastic)](https://github.com/sjexpos/ecomm-orders-service/commits/)
 
+[![Docker pulls](https://img.shields.io/docker/pulls/sjexposecomm/orders-service?logo=docker&style=plastic)](https://hub.docker.com/r/sjexposecomm/orders-service)
+[![Docker size](https://img.shields.io/docker/image-size/sjexposecomm/orders-service?logo=docker&style=plastic)](https://hub.docker.com/r/sjexposecomm/orders-service/tags)
+
 ![](docs/images/arch-orders.png)
 
 This microservice is responsible for ...
