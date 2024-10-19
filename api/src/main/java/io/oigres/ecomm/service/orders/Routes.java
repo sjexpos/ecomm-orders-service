@@ -6,6 +6,7 @@ public class Routes {
 
     public static final String CARTS_CONTROLLER_PATH = API_PREFIX + "/v1/carts";
     public static final String ORDERS_CONTROLLER_PATH = API_PREFIX + "/v1/orders";
+    public static final String CRON_JOBS_CONTROLLER_PATH = API_PREFIX + "/v1/cronjobs";
 
     public static final String GET_ORDER_BY_ID = "/{orderId}";
     public static final String GET_TOTAL_ORDERS = "/total";

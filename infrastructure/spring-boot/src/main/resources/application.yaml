@@ -191,6 +191,8 @@ ecomm:
     orders:
       name: EComm
       version: ${project.version}
+      scheduling:
+        enabled: true
     products:
       baseUri: http://localhost:6062
     users:

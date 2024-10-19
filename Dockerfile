@@ -15,6 +15,7 @@ FROM amazoncorretto:21-al2-jdk
 # ENV TRACING_URL
 # ENV PRODUCTS_SERVICE_BASEURI
 # ENV USERS_SERVICE_BASEURI
+# ENV SCHEDULING_ENABLED   true | false
 
 ADD infrastructure/spring-boot/target/*.jar /opt/orders-service.jar
 
@@ -62,6 +63,7 @@ RUN echo "#!/usr/bin/env bash" > /opt/entrypoint.sh && \
         -Decomm.service.tracing.url=\$TRACING_URL \
         -Decomm.service.products.baseUri=\$PRODUCTS_SERVICE_BASEURI \
         -Decomm.service.users.baseUri=\$USERS_SERVICE_BASEURI \
+        -Decomm.service.orders.scheduling.enabled=\$SCHEDULING_ENABLED \
         -jar /opt/orders-service.jar" >> /opt/entrypoint.sh
 
 RUN chmod 755 /opt/entrypoint.sh

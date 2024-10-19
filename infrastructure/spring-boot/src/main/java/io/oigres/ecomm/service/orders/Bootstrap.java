@@ -1,41 +1,31 @@
 package io.oigres.ecomm.service.orders;
 
+import io.oigres.ecomm.service.orders.config.StockTransactionsScheduledCleanUpConfiguration;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.util.StringUtils;
 
 @SpringBootApplication
 @ComponentScan( basePackageClasses = { Bootstrap.class } )
 public class Bootstrap {
+	private static final String JOB_NAME_PARAMETER = "runjob";
     
 	public static void main(String[] args) {
-		SpringApplication.run(Bootstrap.class, args);
+		SpringApplication application = new SpringApplication(Bootstrap.class);
+		if (StringUtils.hasText(System.getenv(JOB_NAME_PARAMETER))) {
+			application.setWebApplicationType(WebApplicationType.NONE);
+			ConfigurableApplicationContext appCtx = application.run(args);
+			if ( StockTransactionsScheduledCleanUpConfiguration.JOB_NAME.equals(System.getenv(JOB_NAME_PARAMETER))) {
+				StockTransactionsScheduledCleanUpConfiguration bean = appCtx.getBean(StockTransactionsScheduledCleanUpConfiguration.class);
+				bean.cleanUpStockTransactions();
+			}
+			System.exit(0);
+		}
+		application.run(args);
+
 	}
 
-    // @Bean
-    // public ApplicationRunner initializeData(UserJpaRepository plantRepository) throws Exception {
-    //     return (ApplicationArguments args) -> {
-    //         List<User> plants = Arrays.asList(
-    //                 new User("subalpine fir", "abies lasiocarpa", "pinaceae"),
-    //                 new User("sour cherry", "prunus cerasus", "rosaceae"),
-    //                 new User("asian pear", "pyrus pyrifolia", "rosaceae"),
-    //                 new User("chinese witch hazel", "hamamelis mollis", "hamamelidaceae"),
-    //                 new User("silver maple", "acer saccharinum", "sapindaceae"),
-    //                 new User("cucumber tree", "magnolia acuminata", "magnoliaceae"),
-    //                 new User("korean rhododendron", "rhododendron mucronulatum", "ericaceae"),
-    //                 new User("water lettuce", "pistia", "araceae"),
-    //                 new User("sessile oak", "quercus petraea", "fagaceae"),
-    //                 new User("common fig", "ficus carica", "moraceae")
-    //         );
-    //         plantRepository.saveAll(plants);
-    //     };
-    // }
-
-    // @Bean
-    // public ApplicationRunner buildIndex(Indexer indexer) throws Exception {
-    //     return (ApplicationArguments args) -> {
-    //         indexer.indexPersistedData(User.class);
-    //     };
-    // }
-	
 }

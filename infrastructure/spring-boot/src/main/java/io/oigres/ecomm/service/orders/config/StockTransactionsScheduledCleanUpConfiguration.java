@@ -10,6 +10,8 @@ import io.oigres.ecomm.service.orders.usecases.carts.cleanUp.CleanUpStockTransac
 
 @Configuration
 public class StockTransactionsScheduledCleanUpConfiguration {
+    public static final String JOB_NAME = "CLEAN_TRANSACTIONS";
+
     private final CleanUpStockTransactionUseCase cleanUpStockTransactionUseCase;
 
     public StockTransactionsScheduledCleanUpConfiguration(CleanUpStockTransactionUseCase cleanUpStockTransactionUseCase) {

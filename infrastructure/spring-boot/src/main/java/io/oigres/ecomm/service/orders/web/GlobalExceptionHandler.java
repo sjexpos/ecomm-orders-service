@@ -9,6 +9,7 @@ import io.oigres.ecomm.service.products.model.exception.NoStockException;
 import io.oigres.ecomm.service.products.model.exception.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -33,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 @ControllerAdvice
+@ConditionalOnBean(BasicErrorController.class)
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 

@@ -6,6 +6,7 @@ import io.oigres.ecomm.service.products.model.StockTransactionsService;
 import io.oigres.ecomm.service.products.model.stockTransactions.ConfirmStockTransactionRequest;
 import io.oigres.ecomm.service.products.model.stockTransactions.GetElderStockTransactionsResponse;
 import io.oigres.ecomm.service.products.model.stockTransactions.RevertStockTransactionRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 public class CleanUpStockTransactionUseCaseImpl implements CleanUpStockTransactionUseCase {
     private final StockTransactionsService stockTransactionsService;
@@ -25,6 +27,7 @@ public class CleanUpStockTransactionUseCaseImpl implements CleanUpStockTransacti
 
     @Override
     public void handle() {
+        log.info("Cleaning up stock transactions");
         GetElderStockTransactionsResponse stockTransactions = stockTransactionsService.getElderStockTransactions();
         List<Long> transactionIds = stockTransactions.getStockTransactionIds();
         if (!transactionIds.isEmpty()) {
@@ -45,6 +48,7 @@ public class CleanUpStockTransactionUseCaseImpl implements CleanUpStockTransacti
             if (!transactionsToRevert.isEmpty()) {
                 stockTransactionsService.revertStockTransactions(RevertStockTransactionRequest.builder().transactionIds(transactionsToRevert).build());
             }
+            log.info("{} transactions were confirmed and {} were reverted.", transactionsToConfirm.size(), transactionsToRevert.size());
         }
     }
 }
