@@ -116,19 +116,10 @@
     </dependency>
 
     <!-- Distributed tracing -->
-    <dependency>
-      <groupId>io.micrometer</groupId>
-      <artifactId>micrometer-tracing-bridge-otel</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.opentelemetry</groupId>
-      <artifactId>opentelemetry-exporter-otlp</artifactId>
-    </dependency>
-
-    <!-- Prometheus -->
-    <dependency>
-      <groupId>io.micrometer</groupId>
-      <artifactId>micrometer-registry-prometheus</artifactId>
+    <dependency><!-- It's needed to see trace_id and span_id on app logs from otel auto-instrumentation -->
+      <groupId>io.opentelemetry.instrumentation</groupId>
+      <artifactId>opentelemetry-logback-mdc-1.0</artifactId>
+      <scope>runtime</scope>
     </dependency>
 
     <!-- Cloud Native Spring Admin connector -->
@@ -246,6 +237,12 @@
         </executions>
         <configuration>
           <mainClass>${start-class}</mainClass>
+          <agents>
+            <agent>../../opentelemetry-javaagent-2.9.0.jar</agent>
+          </agents>
+          <jvmArguments>
+            -Dotel.javaagent.configuration-file=../../opentelemetry.properties
+          </jvmArguments>
         </configuration>
       </plugin>
     </plugins>

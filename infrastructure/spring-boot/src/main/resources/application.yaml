@@ -122,10 +122,6 @@ management:
       enabled: true
     circuitbreakers:
       enabled: true
-  tracing:
-    enabled: true
-    sampling:
-      probability: 1.0
 
 springdoc:
   show-actuator: false
@@ -172,8 +168,6 @@ resilience4j:
         register-health-indicator: true
 
 logging:
-  pattern:
-    console: '%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%-5p) [${spring.application.name}] [%clr(%15.15t){faint}] [%clr(%32X{traceId}-%16X{spanId}){blue}] %clr(%40.40logger{5.10}:%-4L){cyan} : %m %n'
   level:
     io.oigres.ecomm.service.products: INFO
     org.elasticsearch.client.sniff.Sniffer: FATAL
@@ -197,7 +191,3 @@ ecomm:
       baseUri: http://localhost:6062
     users:
       baseUri: http://localhost:6061
-    tracing:
-      url: http://localhost:4318/v1/traces
-
-

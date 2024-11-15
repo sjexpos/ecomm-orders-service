@@ -1,6 +1,6 @@
 FROM amazoncorretto:21-al2-jdk
-LABEL AUTHOR = 'Sergio Exposito'
-LABEL EMAIL = 'sjexpos@gmail.com'
+LABEL AUTHOR='Sergio Exposito'
+LABEL EMAIL='sjexpos@gmail.com'
 
 # ENV JAVA_XMS             <set initial Java heap size>
 # ENV JAVA_XMX             <set maximum Java heap size>
@@ -21,6 +21,8 @@ LABEL EMAIL = 'sjexpos@gmail.com'
 # ENV SCHEDULING_ENABLED   true | false
 
 ADD infrastructure/spring-boot/target/*.jar /opt/orders-service.jar
+ADD opentelemetry-javaagent-2.9.0.jar /opt/opentelemetry-javaagent.jar
+ADD opentelemetry.properties /opt/opentelemetry.properties
 
 RUN bash -c 'touch /opt/orders-service.jar'
 
@@ -49,7 +51,11 @@ RUN echo "#!/usr/bin/env bash" > /opt/entrypoint.sh && \
     echo "echo \"singleServerConfig:\" > /opt/redisson.yaml " >> /opt/entrypoint.sh && \
     echo "echo \"  address: redis://\$REDIS_HOST:\$REDIS_PORT\" >> /opt/redisson.yaml " >> /opt/entrypoint.sh && \
     echo "" >> /opt/entrypoint.sh && \
-    echo "java -Xms\$JAVA_XMS -Xmx\$JAVA_XMX \
+    echo "java \
+        -javaagent:/opt/opentelemetry-javaagent.jar \
+        -Dotel.javaagent.configuration-file=/opt/opentelemetry.properties \
+        -Dotel.exporter.otlp.traces.endpoint=\$TRACING_URL \
+        -Xms\$JAVA_XMS -Xmx\$JAVA_XMX \
         -Dserver.port=\$PORT \
         -Dmanagement.server.port=\$MANAGEMENT_PORT \
         -Dspring.boot.admin.client.url=\$MONITORING_URL \
@@ -62,7 +68,6 @@ RUN echo "#!/usr/bin/env bash" > /opt/entrypoint.sh && \
         -Dspring.data.redis.port=\$REDIS_PORT \
         -Dspring.jpa.properties.hibernate.cache.redisson.config=/opt/redisson.yaml \
         \$OPENSEARCH_CONN \
-        -Decomm.service.tracing.url=\$TRACING_URL \
         -Decomm.service.products.baseUri=\$PRODUCTS_SERVICE_BASEURI \
         -Decomm.service.users.baseUri=\$USERS_SERVICE_BASEURI \
         -Decomm.service.orders.scheduling.enabled=\$SCHEDULING_ENABLED \
