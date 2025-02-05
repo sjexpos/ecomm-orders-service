@@ -1,6 +1,21 @@
-package io.oigres.ecomm.service.orders;
+/**********
+ This project is free software; you can redistribute it and/or modify it under
+ the terms of the GNU General Public License as published by the
+ Free Software Foundation; either version 3.0 of the License, or (at your
+ option) any later version. (See <https://www.gnu.org/licenses/gpl-3.0.html>.)
 
-import jakarta.validation.Valid;
+ This project is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this project; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
+ **********/
+// Copyright (c) 2024-2025 Sergio Exposito.  All rights reserved.              
+
+package io.oigres.ecomm.service.orders;
 
 import io.oigres.ecomm.service.orders.model.CreateCartException;
 import io.oigres.ecomm.service.orders.model.NoStockException;
@@ -8,7 +23,9 @@ import io.oigres.ecomm.service.orders.model.NotFoundException;
 import io.oigres.ecomm.service.orders.model.StockTimeOutException;
 import io.oigres.ecomm.service.orders.model.cart.InsertCartRequest;
 import io.oigres.ecomm.service.orders.model.cart.InsertCartResponse;
+import jakarta.validation.Valid;
 
 public interface CartsService {
-    InsertCartResponse createCart(@Valid InsertCartRequest request) throws NotFoundException, NoStockException, StockTimeOutException, CreateCartException;
+  InsertCartResponse createCart(@Valid InsertCartRequest request)
+      throws NotFoundException, NoStockException, StockTimeOutException, CreateCartException;
 }

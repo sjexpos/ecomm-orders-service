@@ -1,24 +1,38 @@
+/**********
+ This project is free software; you can redistribute it and/or modify it under
+ the terms of the GNU General Public License as published by the
+ Free Software Foundation; either version 3.0 of the License, or (at your
+ option) any later version. (See <https://www.gnu.org/licenses/gpl-3.0.html>.)
+
+ This project is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this project; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
+ **********/
+// Copyright (c) 2024-2025 Sergio Exposito.  All rights reserved.              
+
 package io.oigres.ecomm.service.orders.usecases.deliveryMethods.list;
 
+import io.oigres.ecomm.service.orders.domain.DeliveryMethod;
+import io.oigres.ecomm.service.orders.repository.DeliveryMethodRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import io.oigres.ecomm.service.orders.domain.DeliveryMethod;
-import io.oigres.ecomm.service.orders.domain.PaymentMethod;
-import io.oigres.ecomm.service.orders.repository.DeliveryMethodRepository;
-import io.oigres.ecomm.service.orders.repository.PaymentMethodRepository;
-
 @Component
 public class GetAllDeliveryMethodsUseCaseImpl implements GetAllDeliveryMethodsUseCase {
-    private final DeliveryMethodRepository deliveryMethodRepository;
+  private final DeliveryMethodRepository deliveryMethodRepository;
 
-    public GetAllDeliveryMethodsUseCaseImpl(DeliveryMethodRepository deliveryMethodRepository) {
-        this.deliveryMethodRepository = deliveryMethodRepository;
-    }
+  public GetAllDeliveryMethodsUseCaseImpl(DeliveryMethodRepository deliveryMethodRepository) {
+    this.deliveryMethodRepository = deliveryMethodRepository;
+  }
 
-    @Override
-    public Page<DeliveryMethod> handle(Pageable pageable) {
-        return deliveryMethodRepository.findAll(pageable);
-    }
+  @Override
+  public Page<DeliveryMethod> handle(Pageable pageable) {
+    return deliveryMethodRepository.findAll(pageable);
+  }
 }

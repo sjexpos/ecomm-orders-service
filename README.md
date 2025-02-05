@@ -56,6 +56,22 @@ OpenTelemetry collector receives oltp data and sends them to different exporters
 * [AWS Cli](https://aws.amazon.com/es/cli/)
 * [Docker](https://www.docker.com/)
 
+## Check styling
+
+### Check if styling is applied
+
+```bash
+mvn spotless:check 
+```
+
+### Apply checkstyle to all files
+
+```bash
+mvn spotless:apply 
+```
+
+*Note*: this goal is run as part as build process
+
 ## Build
 
 ```bash
