@@ -49,7 +49,7 @@ public enum OrderStatusEnum {
       throw new NotFoundException(
           String.format("There is no next status for current status %s", statusEnum.name()));
     } else {
-      return getById(statusEnum.getNextStatusId()).get();
+      return getById(statusEnum.getNextStatusId()).orElse(null);
     }
   }
 

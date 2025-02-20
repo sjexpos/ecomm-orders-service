@@ -20,19 +20,16 @@ package io.oigres.ecomm.service.orders.model.carts;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
 public class InsertOrderResponseDTO implements Serializable {
   private Long orderId;
   private Long dispensaryId;
-  private List<InsertOrderPublicationResponseDTO> publications;
+  @Singular private List<InsertOrderPublicationResponseDTO> publications;
   private String deliveryMethod;
   private String paymentMethod;
   private String status;
@@ -40,4 +37,8 @@ public class InsertOrderResponseDTO implements Serializable {
   private BigDecimal exciseTax;
   private BigDecimal salesTax;
   private BigDecimal total;
+
+  public List<InsertOrderPublicationResponseDTO> getPublications() {
+    return List.copyOf(publications);
+  }
 }

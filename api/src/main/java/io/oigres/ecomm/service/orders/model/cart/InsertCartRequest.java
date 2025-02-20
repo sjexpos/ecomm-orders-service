@@ -21,20 +21,22 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
 public class InsertCartRequest {
   @Schema(name = "userId", required = true)
   @NotNull(message = "userId must not be null") private Long userId;
 
   @Schema(name = "publications", required = true)
   @NotNull(message = "publications must not be null") @Size(min = 1, message = "publications must have at least 1 element")
+  @Singular
   private List<InsertPublicationWithAmountRequest> publications;
+
+  public List<InsertPublicationWithAmountRequest> getPublications() {
+    return List.copyOf(publications);
+  }
 }

@@ -22,6 +22,7 @@ import io.oigres.ecomm.service.orders.OrdersService;
 import io.oigres.ecomm.service.orders.Routes;
 import io.oigres.ecomm.service.orders.domain.Order;
 import io.oigres.ecomm.service.orders.domain.OrderStatus;
+import io.oigres.ecomm.service.orders.domain.Status;
 import io.oigres.ecomm.service.orders.enums.OrderStatusEnum;
 import io.oigres.ecomm.service.orders.exception.OrderNotFoundException;
 import io.oigres.ecomm.service.orders.model.NotFoundException;
@@ -40,6 +41,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -164,7 +166,14 @@ public class OrdersController extends AbstractController implements OrdersServic
                   OrderStatus sts =
                       or.getOrderStatuses().stream()
                           .max(Comparator.comparing(OrderStatus::getDate))
-                          .get();
+                          .orElseGet(
+                              () ->
+                                  OrderStatus.builder()
+                                      .order(or)
+                                      .status(
+                                          Status.builder().name(OrderStatusEnum.ORDERED).build())
+                                      .date(LocalDateTime.now())
+                                      .build());
                   return GetAllOrdersResponse.builder()
                       .id(or.getId())
                       .orderDate(or.getDate())
@@ -255,7 +264,8 @@ public class OrdersController extends AbstractController implements OrdersServic
   public OrderStatusAmountsResponse getOrdersStatusAmount(
       @RequestParam(name = "dispensaryId", required = false) Long dispensaryId) {
     log.debug("############ call getOrdersStatusAmount ############");
-    OrderStatusAmountsResponse response = new OrderStatusAmountsResponse();
+    OrderStatusAmountsResponse.OrderStatusAmountsResponseBuilder builder =
+        OrderStatusAmountsResponse.builder();
     OrderStatusEnumApi.stream()
         .forEach(
             status -> {
@@ -268,10 +278,8 @@ public class OrdersController extends AbstractController implements OrdersServic
                 log.error("Order status amount by {} status was throwing an error", status);
                 log.error(e.getMessage());
               }
-              response
-                  .getStatus()
-                  .add(OrderStatusAmountDto.builder().name(status).amount(amount).build());
+              builder.status(OrderStatusAmountDto.builder().name(status).amount(amount).build());
             });
-    return response;
+    return builder.build();
   }
 }

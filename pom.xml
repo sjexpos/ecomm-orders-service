@@ -22,6 +22,9 @@
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
     <spotless-maven-plugin.version>2.43.0</spotless-maven-plugin.version>
+    <duplicate-finder-maven-plugin.version>2.0.1</duplicate-finder-maven-plugin.version>
+    <modernizer-maven-plugin.version>3.1.0</modernizer-maven-plugin.version>
+    <spotbugs-maven-plugin.version>4.8.6.2</spotbugs-maven-plugin.version>
     <maven-clean-plugin.version>3.4.0</maven-clean-plugin.version>
     <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
     <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
@@ -47,6 +50,9 @@
     <spring-cloud.version>2023.0.3</spring-cloud.version>
     <springdoc.version>2.6.0</springdoc.version>
     <swagger-annotations.version>2.2.22</swagger-annotations.version>
+    <lombok.version>1.18.34</lombok.version> <!-- warning, depends on spring boot version and it is used in maven-compiler-plugin. If the version is not put, intellij does not compile -->
+    <mapstruct.version>1.6.2</mapstruct.version>
+    <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
     <modelmapper.version>3.2.1</modelmapper.version>
     <redisson.hibernate.version>3.34.1</redisson.hibernate.version>
     <postgresql-connector.version>42.7.3</postgresql-connector.version>
@@ -164,7 +170,7 @@
       </dependency>
       <dependency>
         <groupId>io.swagger.core.v3</groupId>
-        <artifactId>swagger-annotations</artifactId>
+        <artifactId>swagger-annotations-jakarta</artifactId>
         <version>${swagger-annotations.version}</version>
       </dependency>
 
@@ -179,6 +185,22 @@
         <groupId>org.modelmapper</groupId>
         <artifactId>modelmapper</artifactId>
         <version>${modelmapper.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.mapstruct</groupId>
+        <artifactId>mapstruct</artifactId>
+        <version>${mapstruct.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.mapstruct</groupId>
+        <artifactId>mapstruct-processor</artifactId>
+        <version>${mapstruct.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok-mapstruct-binding</artifactId>
+        <version>${lombok-mapstruct-binding.version}</version>
       </dependency>
       <dependency>
         <groupId>org.postgresql</groupId>
@@ -362,6 +384,21 @@
           <version>${spotless-maven-plugin.version}</version>
         </plugin>
         <plugin>
+          <groupId>org.basepom.maven</groupId>
+          <artifactId>duplicate-finder-maven-plugin</artifactId>
+          <version>${duplicate-finder-maven-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.gaul</groupId>
+          <artifactId>modernizer-maven-plugin</artifactId>
+          <version>${modernizer-maven-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>com.github.spotbugs</groupId>
+          <artifactId>spotbugs-maven-plugin</artifactId>
+          <version>${spotbugs-maven-plugin.version}</version>
+        </plugin>
+        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-clean-plugin</artifactId>
           <version>${maven-clean-plugin.version}</version>
@@ -512,6 +549,78 @@
         </executions>
       </plugin>
       <plugin>
+        <groupId>org.basepom.maven</groupId>
+        <artifactId>duplicate-finder-maven-plugin</artifactId>
+        <configuration>
+          <checkCompileClasspath>true</checkCompileClasspath>
+          <checkRuntimeClasspath>true</checkRuntimeClasspath>
+          <checkTestClasspath>true</checkTestClasspath>
+          <failBuildInCaseOfEqualContentConflict>true</failBuildInCaseOfEqualContentConflict>
+          <failBuildInCaseOfConflict>true</failBuildInCaseOfConflict>
+          <ignoredDependencies>
+            <dependency>
+              <groupId>org.springframework.cloud</groupId>
+              <artifactId>spring-cloud-contract-shade</artifactId>
+            </dependency>
+            <dependency>
+              <groupId>org.springframework</groupId>
+              <artifactId>spring-jcl</artifactId>
+            </dependency>
+            <dependency>
+              <groupId>org.springframework</groupId>
+              <artifactId>spring-aop</artifactId>
+            </dependency>
+            <dependency>
+              <groupId>jakarta.servlet</groupId>
+              <artifactId>jakarta.servlet-api</artifactId>
+            </dependency>
+          </ignoredDependencies>
+          <ignoredResourcePatterns>COPYRIGHT.txt,hamcrest-core-is-deprecated.txt,helpers.nashorn.js,about.html,mozilla/public-suffix-list.txt,plugin.properties</ignoredResourcePatterns>
+        </configuration>
+        <executions>
+          <execution>
+            <id>run-duplicate-finder</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.gaul</groupId>
+        <artifactId>modernizer-maven-plugin</artifactId>
+        <configuration>
+          <javaVersion>${maven.compiler.source}</javaVersion>
+        </configuration>
+        <executions>
+          <execution>
+            <id>run-modernizer</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>modernizer</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <configuration>
+          <excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
+          <jvmArgs>-Dfindbugs.assertionmethods=org.apache.commons.lang3.Validate.notNull</jvmArgs>
+        </configuration>
+        <executions>
+          <execution>
+            <id>run-spotbugs</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
@@ -519,6 +628,29 @@
           <target>${maven.compiler.target}</target>
           <encoding>${project.build.sourceEncoding}</encoding>
           <parameters>true</parameters> <!-- store method argument names on byte code. Useful for spring SPEL -->
+          <annotationProcessorPaths>
+            <!-- The order in those processors are important. If not mapstruct would work bad together lombok -->
+            <path>
+              <groupId>org.springframework.boot</groupId>
+              <artifactId>spring-boot-configuration-processor</artifactId>
+            </path>
+            <path>
+              <groupId>org.hibernate.orm</groupId>
+              <artifactId>hibernate-jpamodelgen</artifactId>
+            </path>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+            </path>
+            <path>
+              <groupId>org.mapstruct</groupId>
+              <artifactId>mapstruct-processor</artifactId>
+            </path>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok-mapstruct-binding</artifactId>
+            </path>
+          </annotationProcessorPaths>
         </configuration>
       </plugin>
       <plugin>

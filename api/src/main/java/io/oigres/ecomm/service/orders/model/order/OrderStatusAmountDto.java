@@ -19,14 +19,11 @@ package io.oigres.ecomm.service.orders.model.order;
 
 import io.oigres.ecomm.service.orders.OrderStatusEnumApi;
 import java.io.Serializable;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 public class OrderStatusAmountDto implements Serializable {
   private OrderStatusEnumApi name;

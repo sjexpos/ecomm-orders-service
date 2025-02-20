@@ -19,16 +19,17 @@ package io.oigres.ecomm.service.orders.model.order;
 
 import java.io.Serializable;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 public class ChangeCurrentOrderStatusResponse implements Serializable {
   private String currentStatus;
-  private List<GetStatusesResponse> statuses;
+  @Singular private List<GetStatusesResponse> statuses;
+
+  public List<GetStatusesResponse> getStatuses() {
+    return List.copyOf(statuses);
+  }
 }

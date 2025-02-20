@@ -19,15 +19,12 @@ package io.oigres.ecomm.service.orders.model.carts;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
 public class InsertOrderPublicationResponseDTO implements Serializable {
   private Long publicationId;
   private Integer amount;

@@ -20,15 +20,12 @@ package io.oigres.ecomm.service.orders.model.cart;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
 public class InsertPublicationWithAmountRequest {
   @Schema(name = "publicationId", required = true)
   @NotNull(message = "publicationId must not be null") private Long publicationId;

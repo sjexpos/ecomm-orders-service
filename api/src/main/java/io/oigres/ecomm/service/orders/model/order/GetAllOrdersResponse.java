@@ -21,22 +21,23 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 public class GetAllOrdersResponse implements Serializable {
   private Long id;
   private LocalDateTime orderDate;
   private String orderStatus;
   private LocalDateTime orderStatusDate;
-  private List<OrderPublicationResponse> items;
+  @Singular private List<OrderPublicationResponse> items;
   private Long userId;
   private Long dispensaryId;
   private BigDecimal total;
+
+  public List<OrderPublicationResponse> getItems() {
+    return List.copyOf(items);
+  }
 }

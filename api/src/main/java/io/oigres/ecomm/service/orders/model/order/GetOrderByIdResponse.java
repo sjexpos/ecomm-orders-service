@@ -21,20 +21,17 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 public class GetOrderByIdResponse implements Serializable {
   private Long id;
   private LocalDateTime orderDate;
-  private List<OrderPublicationResponse> items;
-  private List<GetStatusesResponse> statuses;
+  @Singular private List<OrderPublicationResponse> items;
+  @Singular private List<GetStatusesResponse> statuses;
   private Long dispensaryId;
   private Long userId;
   private String deliveryMethod;
@@ -43,4 +40,12 @@ public class GetOrderByIdResponse implements Serializable {
   private BigDecimal exciseTax;
   private BigDecimal salesTax;
   private BigDecimal total;
+
+  public List<OrderPublicationResponse> getItems() {
+    return List.copyOf(items);
+  }
+
+  public List<GetStatusesResponse> getStatuses() {
+    return List.copyOf(statuses);
+  }
 }

@@ -46,7 +46,7 @@ public class SortRequest implements Serializable {
   }
 
   public SortRequest(List<Order> orders) {
-    this.orders = orders;
+    this.orders = List.copyOf(orders);
   }
 
   /**
@@ -153,7 +153,7 @@ public class SortRequest implements Serializable {
   }
 
   public List<Order> getOrders() {
-    return this.orders;
+    return List.copyOf(this.orders);
   }
 
   public SortRequest and(SortRequest sort) {

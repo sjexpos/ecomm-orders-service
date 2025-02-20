@@ -19,18 +19,15 @@ package io.oigres.ecomm.service.orders.model.cart;
 
 import java.math.BigDecimal;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
 public class InsertOrderResponse {
   private Long orderId;
-  private List<InsertOrderDispensaryPublicationResponse> publications;
+  @Singular private List<InsertOrderDispensaryPublicationResponse> publications;
   private Long dispensaryId;
   private String deliveryMethod;
   private String paymentMethod;
@@ -39,4 +36,8 @@ public class InsertOrderResponse {
   private BigDecimal exciseTax;
   private BigDecimal salesTax;
   private BigDecimal total;
+
+  public List<InsertOrderDispensaryPublicationResponse> getPublications() {
+    return List.copyOf(publications);
+  }
 }

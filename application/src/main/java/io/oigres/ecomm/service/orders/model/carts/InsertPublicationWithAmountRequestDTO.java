@@ -17,15 +17,12 @@
 
 package io.oigres.ecomm.service.orders.model.carts;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
 public class InsertPublicationWithAmountRequestDTO {
   private Long publicationId;
   private Integer amount;

@@ -133,12 +133,11 @@ public class CreateCartUseCaseImpl implements CreateCartUseCase {
       Cart cart = Cart.builder().userId(request.getUserId()).date(LocalDateTime.now()).build();
       cart = cartRepository.save(cart);
       List<Order> orders = new ArrayList<>();
-      for (Long dispensaryId : publicationsPerDispensary.keySet()) {
+      for (Map.Entry<Long, List<PublicationWithTransactionResponse>> entry :
+          publicationsPerDispensary.entrySet()) {
         BigDecimal subtotal = BigDecimal.ZERO;
-        List<PublicationWithTransactionResponse> publications =
-            publicationsPerDispensary.get(dispensaryId);
         Set<OrderProduct> products = new HashSet<>();
-        for (PublicationWithTransactionResponse transaction : publications) {
+        for (PublicationWithTransactionResponse transaction : entry.getValue()) {
           OrderProduct orderProduct =
               OrderProduct.builder()
                   .dispensaryProductId(transaction.getPublicationId())
@@ -154,14 +153,14 @@ public class CreateCartUseCaseImpl implements CreateCartUseCase {
           products.add(orderProduct);
         }
         BigDecimal exciseTax = subtotal.multiply(tax.getTax());
-        BigDecimal salesTax = subtotal.multiply(commissionPerDispensary.get(dispensaryId));
+        BigDecimal salesTax = subtotal.multiply(commissionPerDispensary.get(entry.getKey()));
         BigDecimal total = subtotal.add(exciseTax).add(salesTax);
         OrderStatus orderStatus =
             OrderStatus.builder().date(LocalDateTime.now()).status(status).build();
         Order order =
             Order.builder()
                 .userId(request.getUserId())
-                .dispensaryId(dispensaryId)
+                .dispensaryId(entry.getKey())
                 .cart(cart)
                 .date(LocalDateTime.now())
                 .paymentMethod(paymentMethod)

@@ -18,15 +18,16 @@
 package io.oigres.ecomm.service.orders.model.carts;
 
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
 public class InsertCartResponseDTO {
-  private List<InsertOrderResponseDTO> orders;
+  @Singular private List<InsertOrderResponseDTO> orders;
+
+  public List<InsertOrderResponseDTO> getOrders() {
+    return List.copyOf(orders);
+  }
 }
