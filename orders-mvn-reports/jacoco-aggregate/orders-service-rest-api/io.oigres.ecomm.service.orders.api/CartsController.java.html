@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>CartsController.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Aggregated Reports</a> &gt; <a href="../index.html" class="el_bundle">orders-service-rest-api</a> &gt; <a href="index.source.html" class="el_package">io.oigres.ecomm.service.orders.api</a> &gt; <span class="el_source">CartsController.java</span></div><h1>CartsController.java</h1><pre class="source lang-java linenums">/**********
+ This project is free software; you can redistribute it and/or modify it under
+ the terms of the GNU General Public License as published by the
+ Free Software Foundation; either version 3.0 of the License, or (at your
+ option) any later version. (See &lt;https://www.gnu.org/licenses/gpl-3.0.html&gt;.)
+
+ This project is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this project; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
+ **********/
+// Copyright (c) 2024-2025 Sergio Exposito.  All rights reserved.              
+
+package io.oigres.ecomm.service.orders.api;
+
+import io.oigres.ecomm.service.orders.CartsService;
+import io.oigres.ecomm.service.orders.DeliveryMethodsService;
+import io.oigres.ecomm.service.orders.PaymentMethodsService;
+import io.oigres.ecomm.service.orders.Routes;
+import io.oigres.ecomm.service.orders.domain.DeliveryMethod;
+import io.oigres.ecomm.service.orders.domain.PaymentMethod;
+import io.oigres.ecomm.service.orders.exception.CreateCartException;
+import io.oigres.ecomm.service.orders.model.PageResponse;
+import io.oigres.ecomm.service.orders.model.PageResponseImpl;
+import io.oigres.ecomm.service.orders.model.PageableRequest;
+import io.oigres.ecomm.service.orders.model.cart.*;
+import io.oigres.ecomm.service.orders.model.carts.InsertCartRequestDTO;
+import io.oigres.ecomm.service.orders.model.carts.InsertCartResponseDTO;
+import io.oigres.ecomm.service.orders.model.carts.InsertPublicationWithAmountRequestDTO;
+import io.oigres.ecomm.service.orders.usecases.carts.create.CreateCartUseCase;
+import io.oigres.ecomm.service.orders.usecases.deliveryMethods.list.GetAllDeliveryMethodsUseCase;
+import io.oigres.ecomm.service.orders.usecases.paymentMethods.list.GetAllPaymentMethodsUseCase;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.util.MimeTypeUtils;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping(Routes.CARTS_CONTROLLER_PATH)
+@Tag(name = &quot;Carts&quot;, description = &quot; &quot;)
+<span class="nc" id="L56">@Slf4j</span>
+@Validated
+public class CartsController extends AbstractController
+    implements CartsService, PaymentMethodsService, DeliveryMethodsService {
+  private final GetAllPaymentMethodsUseCase getAllPaymentMethodsUseCase;
+  private final GetAllDeliveryMethodsUseCase getAllDeliveryMethodsUseCase;
+  private final CreateCartUseCase createCartUseCase;
+
+  public CartsController(
+      GetAllPaymentMethodsUseCase getAllPaymentMethodsUseCase,
+      GetAllDeliveryMethodsUseCase getAllDeliveryMethodsUseCase,
+<span class="nc" id="L67">      CreateCartUseCase createCartUseCase) {</span>
+<span class="nc" id="L68">    this.getAllPaymentMethodsUseCase = getAllPaymentMethodsUseCase;</span>
+<span class="nc" id="L69">    this.getAllDeliveryMethodsUseCase = getAllDeliveryMethodsUseCase;</span>
+<span class="nc" id="L70">    this.createCartUseCase = createCartUseCase;</span>
+<span class="nc" id="L71">  }</span>
+
+  @Override
+  @Operation(summary = &quot;Create Cart&quot;)
+  @PostMapping(produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public InsertCartResponse createCart(@RequestBody @Valid InsertCartRequest request)
+      throws io.oigres.ecomm.service.orders.model.NotFoundException,
+          io.oigres.ecomm.service.orders.model.NoStockException,
+          io.oigres.ecomm.service.orders.model.StockTimeOutException,
+          io.oigres.ecomm.service.orders.model.CreateCartException {
+<span class="nc" id="L82">    log.info(&quot;############ call createCart ############&quot;);</span>
+    InsertCartResponseDTO response;
+    try {
+<span class="nc" id="L85">      response =</span>
+<span class="nc" id="L86">          createCartUseCase.handle(</span>
+<span class="nc" id="L87">              InsertCartRequestDTO.builder()</span>
+<span class="nc" id="L88">                  .userId(request.getUserId())</span>
+<span class="nc" id="L89">                  .publications(</span>
+<span class="nc" id="L90">                      request.getPublications().stream()</span>
+<span class="nc" id="L91">                          .map(</span>
+                              pub -&gt;
+<span class="nc" id="L93">                                  InsertPublicationWithAmountRequestDTO.builder()</span>
+<span class="nc" id="L94">                                      .publicationId(pub.getPublicationId())</span>
+<span class="nc" id="L95">                                      .amount(pub.getAmount())</span>
+<span class="nc" id="L96">                                      .build())</span>
+<span class="nc" id="L97">                          .collect(Collectors.toList()))</span>
+<span class="nc" id="L98">                  .build());</span>
+<span class="nc" id="L99">    } catch (io.oigres.ecomm.service.products.model.exception.NotFoundException</span>
+        | io.oigres.ecomm.service.users.api.model.exception.NotFoundException
+        | io.oigres.ecomm.service.orders.exception.NotFoundException e) {
+<span class="nc" id="L102">      throw new io.oigres.ecomm.service.orders.model.NotFoundException(e.getMessage());</span>
+<span class="nc" id="L103">    } catch (io.oigres.ecomm.service.products.model.exception.NoStockException e) {</span>
+<span class="nc" id="L104">      throw new io.oigres.ecomm.service.orders.model.NoStockException(e.getMessage());</span>
+<span class="nc" id="L105">    } catch (io.oigres.ecomm.service.products.model.exception.StockTimeOutException e) {</span>
+<span class="nc" id="L106">      throw new io.oigres.ecomm.service.orders.model.StockTimeOutException(e.getMessage());</span>
+<span class="nc" id="L107">    } catch (CreateCartException e) {</span>
+<span class="nc" id="L108">      throw new io.oigres.ecomm.service.orders.model.CreateCartException(e.getMessage());</span>
+<span class="nc" id="L109">    }</span>
+<span class="nc" id="L110">    return InsertCartResponse.builder()</span>
+<span class="nc" id="L111">        .orders(</span>
+<span class="nc" id="L112">            response.getOrders().stream()</span>
+<span class="nc" id="L113">                .map(</span>
+                    or -&gt;
+<span class="nc" id="L115">                        InsertOrderResponse.builder()</span>
+<span class="nc" id="L116">                            .orderId(or.getOrderId())</span>
+<span class="nc" id="L117">                            .dispensaryId(or.getDispensaryId())</span>
+<span class="nc" id="L118">                            .publications(</span>
+<span class="nc" id="L119">                                or.getPublications().stream()</span>
+<span class="nc" id="L120">                                    .map(</span>
+                                        pub -&gt;
+<span class="nc" id="L122">                                            InsertOrderDispensaryPublicationResponse.builder()</span>
+<span class="nc" id="L123">                                                .dispensaryPublicationId(pub.getPublicationId())</span>
+<span class="nc" id="L124">                                                .amount(pub.getAmount())</span>
+<span class="nc" id="L125">                                                .price(pub.getPrice())</span>
+<span class="nc" id="L126">                                                .build())</span>
+<span class="nc" id="L127">                                    .collect(Collectors.toList()))</span>
+<span class="nc" id="L128">                            .status(or.getStatus())</span>
+<span class="nc" id="L129">                            .deliveryMethod(or.getDeliveryMethod())</span>
+<span class="nc" id="L130">                            .paymentMethod(or.getPaymentMethod())</span>
+<span class="nc" id="L131">                            .subtotal(or.getSubtotal())</span>
+<span class="nc" id="L132">                            .exciseTax(or.getExciseTax())</span>
+<span class="nc" id="L133">                            .salesTax(or.getSalesTax())</span>
+<span class="nc" id="L134">                            .total(or.getTotal())</span>
+<span class="nc" id="L135">                            .build())</span>
+<span class="nc" id="L136">                .collect(Collectors.toList()))</span>
+<span class="nc" id="L137">        .build();</span>
+  }
+
+  @Override
+  @Operation(summary = &quot;Get all payment methods&quot;)
+  @PageableAsQueryParam
+  @GetMapping(
+      value = Routes.GET_ALL_PAYMENT_METHODS,
+      produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public PageResponse&lt;GetAllPaymentMethodsResponse&gt; getAllPaymentMethods(
+      @Parameter(hidden = true, required = true) PageableRequest pageable) {
+<span class="nc" id="L149">    log.debug(&quot;############ call getAllPaymentMethods ############&quot;);</span>
+<span class="nc" id="L150">    Page&lt;PaymentMethod&gt; paymentMethods =</span>
+<span class="nc" id="L151">        getAllPaymentMethodsUseCase.handle(</span>
+<span class="nc" id="L152">            PageRequest.of(</span>
+<span class="nc" id="L153">                pageable.getPageNumber(), pageable.getPageSize(), Sort.by(&quot;id&quot;).ascending()));</span>
+<span class="nc" id="L154">    List&lt;GetAllPaymentMethodsResponse&gt; response =</span>
+<span class="nc" id="L155">        paymentMethods.getContent().stream()</span>
+<span class="nc" id="L156">            .map(</span>
+                el -&gt;
+<span class="nc" id="L158">                    GetAllPaymentMethodsResponse.builder()</span>
+<span class="nc" id="L159">                        .id(el.getId())</span>
+<span class="nc" id="L160">                        .name(el.getName().getPrettyName())</span>
+<span class="nc" id="L161">                        .build())</span>
+<span class="nc" id="L162">            .collect(Collectors.toList());</span>
+<span class="nc" id="L163">    return new PageResponseImpl&lt;&gt;(response, pageable, paymentMethods.getTotalElements());</span>
+  }
+
+  @Override
+  @Operation(summary = &quot;Get all delivery methods&quot;)
+  @PageableAsQueryParam
+  @GetMapping(
+      value = Routes.GET_ALL_DELIVERY_METHODS,
+      produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public PageResponse&lt;GetAllDeliveryMethodsResponse&gt; getAllDeliveryMethods(
+      @Parameter(hidden = true, required = true) PageableRequest pageable) {
+<span class="nc" id="L175">    log.debug(&quot;############ call getAllDeliveryMethods ############&quot;);</span>
+<span class="nc" id="L176">    Page&lt;DeliveryMethod&gt; deliveryMethods =</span>
+<span class="nc" id="L177">        getAllDeliveryMethodsUseCase.handle(</span>
+<span class="nc" id="L178">            PageRequest.of(</span>
+<span class="nc" id="L179">                pageable.getPageNumber(), pageable.getPageSize(), Sort.by(&quot;id&quot;).ascending()));</span>
+<span class="nc" id="L180">    List&lt;GetAllDeliveryMethodsResponse&gt; response =</span>
+<span class="nc" id="L181">        deliveryMethods.getContent().stream()</span>
+<span class="nc" id="L182">            .map(</span>
+                el -&gt;
+<span class="nc" id="L184">                    GetAllDeliveryMethodsResponse.builder()</span>
+<span class="nc" id="L185">                        .id(el.getId())</span>
+<span class="nc" id="L186">                        .name(el.getName().getPrettyName())</span>
+<span class="nc" id="L187">                        .build())</span>
+<span class="nc" id="L188">            .collect(Collectors.toList());</span>
+<span class="nc" id="L189">    return new PageResponseImpl&lt;&gt;(response, pageable, deliveryMethods.getTotalElements());</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

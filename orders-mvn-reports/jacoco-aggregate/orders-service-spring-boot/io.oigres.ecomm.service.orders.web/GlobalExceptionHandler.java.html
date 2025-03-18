@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>GlobalExceptionHandler.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Aggregated Reports</a> &gt; <a href="../index.html" class="el_bundle">orders-service-spring-boot</a> &gt; <a href="index.source.html" class="el_package">io.oigres.ecomm.service.orders.web</a> &gt; <span class="el_source">GlobalExceptionHandler.java</span></div><h1>GlobalExceptionHandler.java</h1><pre class="source lang-java linenums">/**********
+ This project is free software; you can redistribute it and/or modify it under
+ the terms of the GNU General Public License as published by the
+ Free Software Foundation; either version 3.0 of the License, or (at your
+ option) any later version. (See &lt;https://www.gnu.org/licenses/gpl-3.0.html&gt;.)
+
+ This project is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this project; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
+ **********/
+// Copyright (c) 2024-2025 Sergio Exposito.  All rights reserved.              
+
+package io.oigres.ecomm.service.orders.web;
+
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
+import io.oigres.ecomm.service.orders.domain.DomainException;
+import io.oigres.ecomm.service.orders.model.CreateCartException;
+import io.oigres.ecomm.service.orders.model.StockTimeOutException;
+import io.oigres.ecomm.service.products.model.CommonErrorHandlerResponse;
+import io.oigres.ecomm.service.products.model.exception.NoStockException;
+import io.oigres.ecomm.service.products.model.exception.NotFoundException;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+@ControllerAdvice
+@ConditionalOnBean(BasicErrorController.class)
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+<span class="nc" id="L55">  private final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);</span>
+
+  private final BasicErrorController basicErrorController;
+
+  public GlobalExceptionHandler(BasicErrorController basicErrorController) {
+<span class="nc" id="L60">    super();</span>
+<span class="nc" id="L61">    this.basicErrorController = basicErrorController;</span>
+<span class="nc" id="L62">  }</span>
+
+  protected ResponseEntity&lt;Object&gt; customHandleException(
+      HttpStatusCode status, Exception ex, HttpServletRequest request) {
+<span class="nc" id="L66">    LOGGER.debug(</span>
+<span class="nc" id="L67">        String.format(</span>
+            &quot;Handling exception %s, it will response status %s (%s) &quot;,
+<span class="nc" id="L69">            ex.getClass().getSimpleName(), status.toString(), status.value()));</span>
+<span class="nc" id="L70">    request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, status.value());</span>
+<span class="nc" id="L71">    request.setAttribute(RequestDispatcher.ERROR_EXCEPTION, ex);</span>
+<span class="nc" id="L72">    request.setAttribute(RequestDispatcher.ERROR_REQUEST_URI, request.getRequestURI());</span>
+<span class="nc" id="L73">    ResponseEntity&lt;Map&lt;String, Object&gt;&gt; error = this.basicErrorController.error(request);</span>
+<span class="nc" id="L74">    return super.handleExceptionInternal(</span>
+<span class="nc" id="L75">        ex, error.getBody(), new HttpHeaders(), status, new ServletWebRequest(request));</span>
+  }
+
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity&lt;Object&gt; handleConstraintViolationException(
+      ConstraintViolationException ex, HttpServletRequest request) {
+<span class="nc" id="L81">    return customHandleException(HttpStatus.BAD_REQUEST, ex, request);</span>
+  }
+
+  @ExceptionHandler(IllegalArgumentException.class)
+  public ResponseEntity&lt;Object&gt; handleIllegalArgumentException(
+      IllegalArgumentException ex, HttpServletRequest request) {
+<span class="nc" id="L87">    return customHandleException(HttpStatus.BAD_REQUEST, ex, request);</span>
+  }
+
+  @Override
+  protected ResponseEntity&lt;Object&gt; handleMethodArgumentNotValid(
+      MethodArgumentNotValidException ex,
+      HttpHeaders headers,
+      HttpStatusCode status,
+      WebRequest request) {
+<span class="nc" id="L96">    LOGGER.info(</span>
+<span class="nc" id="L97">        String.format(</span>
+            &quot;Handling exception %s, it will response status %s (%s) &quot;,
+<span class="nc" id="L99">            ex.getClass().getSimpleName(), status.toString(), status.value()));</span>
+<span class="nc" id="L100">    List&lt;String&gt; errorList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L101">    List&lt;ObjectError&gt; exceptionMessage = ex.getBindingResult().getAllErrors();</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">    for (ObjectError error : exceptionMessage) {</span>
+<span class="nc" id="L103">      errorList.add(error.getDefaultMessage());</span>
+<span class="nc" id="L104">    }</span>
+<span class="nc" id="L105">    return new ResponseEntity&lt;&gt;(</span>
+<span class="nc" id="L106">        CommonErrorHandlerResponse.builder()</span>
+<span class="nc" id="L107">            .error(Integer.toString(status.value()))</span>
+<span class="nc" id="L108">            .status(status.value())</span>
+<span class="nc" id="L109">            .message(errorList.toString())</span>
+<span class="nc" id="L110">            .path(&quot;&quot;)</span>
+<span class="nc" id="L111">            .build(),</span>
+        status);
+  }
+
+  @ExceptionHandler(RequestNotPermitted.class)
+  public ResponseEntity&lt;Object&gt; handleRequestNotPermitted(
+      RequestNotPermitted ex, HttpServletRequest request) {
+<span class="nc" id="L118">    logger.warn(&quot;RATE LIMIT EXCEEDED: &quot; + ex.getMessage());</span>
+<span class="nc" id="L119">    return customHandleException(HttpStatus.TOO_MANY_REQUESTS, ex, request);</span>
+  }
+
+  @ExceptionHandler({
+    DataIntegrityViolationException.class,
+    JpaObjectRetrievalFailureException.class
+  })
+  public ResponseEntity&lt;Object&gt; handleDataIntegrityViolationException(
+      Exception ex, HttpServletRequest request) {
+<span class="nc" id="L128">    return customHandleException(HttpStatus.BAD_REQUEST, ex, request);</span>
+  }
+
+  @Override
+  protected ResponseEntity&lt;Object&gt; handleExceptionInternal(
+      Exception ex,
+      @Nullable Object body,
+      HttpHeaders headers,
+      HttpStatusCode status,
+      WebRequest request) {
+<span class="nc bnc" id="L138" title="All 4 branches missed.">    if (body == null &amp;&amp; request instanceof ServletWebRequest) {</span>
+<span class="nc" id="L139">      return customHandleException(status, ex, ((ServletWebRequest) request).getRequest());</span>
+    }
+<span class="nc" id="L141">    return super.handleExceptionInternal(ex, body, headers, status, request);</span>
+  }
+
+  @ExceptionHandler(DomainException.class)
+  public ResponseEntity&lt;Object&gt; handleDomainException(
+      DomainException ex, HttpServletRequest request) {
+<span class="nc" id="L147">    return customHandleException(HttpStatus.BAD_REQUEST, ex, request);</span>
+  }
+
+  @ExceptionHandler(NotFoundException.class)
+  public ResponseEntity&lt;Object&gt; handleNotFoundException(
+      NotFoundException ex, HttpServletRequest request) {
+<span class="nc" id="L153">    return customHandleException(HttpStatus.NOT_FOUND, ex, request);</span>
+  }
+
+  @ExceptionHandler(NoStockException.class)
+  public ResponseEntity&lt;Object&gt; handleNoStockException(
+      NoStockException ex, HttpServletRequest request) {
+<span class="nc" id="L159">    return customHandleException(HttpStatus.NOT_ACCEPTABLE, ex, request);</span>
+  }
+
+  @ExceptionHandler(CreateCartException.class)
+  public ResponseEntity&lt;Object&gt; handleNoStockException(
+      CreateCartException ex, HttpServletRequest request) {
+<span class="nc" id="L165">    return customHandleException(HttpStatus.CONFLICT, ex, request);</span>
+  }
+
+  @ExceptionHandler(StockTimeOutException.class)
+  public ResponseEntity&lt;Object&gt; handleStockTimeOutException(
+      StockTimeOutException ex, HttpServletRequest request) {
+<span class="nc" id="L171">    return customHandleException(HttpStatus.CONFLICT, ex, request);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

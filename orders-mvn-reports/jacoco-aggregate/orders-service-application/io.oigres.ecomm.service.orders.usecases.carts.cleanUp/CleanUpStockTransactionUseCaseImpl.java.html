@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>CleanUpStockTransactionUseCaseImpl.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Aggregated Reports</a> &gt; <a href="../index.html" class="el_bundle">orders-service-application</a> &gt; <a href="index.source.html" class="el_package">io.oigres.ecomm.service.orders.usecases.carts.cleanUp</a> &gt; <span class="el_source">CleanUpStockTransactionUseCaseImpl.java</span></div><h1>CleanUpStockTransactionUseCaseImpl.java</h1><pre class="source lang-java linenums">/**********
+ This project is free software; you can redistribute it and/or modify it under
+ the terms of the GNU General Public License as published by the
+ Free Software Foundation; either version 3.0 of the License, or (at your
+ option) any later version. (See &lt;https://www.gnu.org/licenses/gpl-3.0.html&gt;.)
+
+ This project is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this project; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
+ **********/
+// Copyright (c) 2024-2025 Sergio Exposito.  All rights reserved.              
+
+package io.oigres.ecomm.service.orders.usecases.carts.cleanUp;
+
+import io.oigres.ecomm.service.orders.domain.OrderProduct;
+import io.oigres.ecomm.service.orders.repository.OrderProductRepository;
+import io.oigres.ecomm.service.products.model.StockTransactionsService;
+import io.oigres.ecomm.service.products.model.stockTransactions.ConfirmStockTransactionRequest;
+import io.oigres.ecomm.service.products.model.stockTransactions.GetElderStockTransactionsResponse;
+import io.oigres.ecomm.service.products.model.stockTransactions.RevertStockTransactionRequest;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
+<span class="nc" id="L33">@Slf4j</span>
+@Component
+public class CleanUpStockTransactionUseCaseImpl implements CleanUpStockTransactionUseCase {
+  private final StockTransactionsService stockTransactionsService;
+  private final OrderProductRepository orderProductRepository;
+
+  public CleanUpStockTransactionUseCaseImpl(
+      StockTransactionsService stockTransactionsService,
+<span class="nc" id="L41">      OrderProductRepository orderProductRepository) {</span>
+<span class="nc" id="L42">    this.stockTransactionsService = stockTransactionsService;</span>
+<span class="nc" id="L43">    this.orderProductRepository = orderProductRepository;</span>
+<span class="nc" id="L44">  }</span>
+
+  @Override
+  public void handle() {
+<span class="nc" id="L48">    log.info(&quot;Cleaning up stock transactions&quot;);</span>
+<span class="nc" id="L49">    GetElderStockTransactionsResponse stockTransactions =</span>
+<span class="nc" id="L50">        stockTransactionsService.getElderStockTransactions();</span>
+<span class="nc" id="L51">    List&lt;Long&gt; transactionIds = stockTransactions.getStockTransactionIds();</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">    if (!transactionIds.isEmpty()) {</span>
+<span class="nc" id="L53">      List&lt;OrderProduct&gt; orderProducts =</span>
+<span class="nc" id="L54">          orderProductRepository.findByTransactionIdIn(transactionIds);</span>
+<span class="nc" id="L55">      Set&lt;Long&gt; set =</span>
+<span class="nc" id="L56">          orderProducts.stream().map(OrderProduct::getTransactionId).collect(Collectors.toSet());</span>
+<span class="nc" id="L57">      List&lt;Long&gt; transactionsToConfirm = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L58">      List&lt;Long&gt; transactionsToRevert = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L59">      transactionIds.forEach(</span>
+          tr -&gt; {
+<span class="nc bnc" id="L61" title="All 2 branches missed.">            if (set.contains(tr)) {</span>
+<span class="nc" id="L62">              transactionsToConfirm.add(tr);</span>
+            } else {
+<span class="nc" id="L64">              transactionsToRevert.add(tr);</span>
+            }
+<span class="nc" id="L66">          });</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">      if (!transactionsToConfirm.isEmpty()) {</span>
+<span class="nc" id="L68">        stockTransactionsService.confirmStockTransactions(</span>
+<span class="nc" id="L69">            ConfirmStockTransactionRequest.builder().transactionIds(transactionsToConfirm).build());</span>
+      }
+<span class="nc bnc" id="L71" title="All 2 branches missed.">      if (!transactionsToRevert.isEmpty()) {</span>
+<span class="nc" id="L72">        stockTransactionsService.revertStockTransactions(</span>
+<span class="nc" id="L73">            RevertStockTransactionRequest.builder().transactionIds(transactionsToRevert).build());</span>
+      }
+<span class="nc" id="L75">      log.info(</span>
+          &quot;{} transactions were confirmed and {} were reverted.&quot;,
+<span class="nc" id="L77">          transactionsToConfirm.size(),</span>
+<span class="nc" id="L78">          transactionsToRevert.size());</span>
+    }
+<span class="nc" id="L80">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

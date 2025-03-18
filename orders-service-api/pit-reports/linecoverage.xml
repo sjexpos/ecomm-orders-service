@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponse$InsertCartResponseBuilder' method='build()Lio/oigres/ecomm/service/orders/model/cart/InsertCartResponse;' number='3'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertOrderResponse' method='getStatus()Ljava/lang/String;' number='0'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponse$InsertCartResponseBuilder' method='build()Lio/oigres/ecomm/service/orders/model/cart/InsertCartResponse;' number='2'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponse$InsertCartResponseBuilder' method='build()Lio/oigres/ecomm/service/orders/model/cart/InsertCartResponse;' number='0'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='&lt;init&gt;()V' number='1'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='&lt;init&gt;()V' number='0'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponse$InsertCartResponseBuilder' method='build()Lio/oigres/ecomm/service/orders/model/cart/InsertCartResponse;' number='12'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertOrderResponse' method='getOrderId()Ljava/lang/Long;' number='0'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponse$InsertCartResponseBuilder' method='build()Lio/oigres/ecomm/service/orders/model/cart/InsertCartResponse;' number='7'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponse$InsertCartResponseBuilder' method='build()Lio/oigres/ecomm/service/orders/model/cart/InsertCartResponse;' number='8'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponse$InsertCartResponseBuilder' method='build()Lio/oigres/ecomm/service/orders/model/cart/InsertCartResponse;' number='6'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertOrderResponse$InsertOrderResponseBuilder' method='&lt;init&gt;()V' number='0'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertOrderResponse$InsertOrderResponseBuilder' method='&lt;init&gt;()V' number='1'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertOrderResponse$InsertOrderResponseBuilder' method='status(Ljava/lang/String;)Lio/oigres/ecomm/service/orders/model/cart/InsertOrderResponse$InsertOrderResponseBuilder;' number='0'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponse$InsertCartResponseBuilder' method='build()Lio/oigres/ecomm/service/orders/model/cart/InsertCartResponse;' number='13'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='29'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='28'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertOrderResponse' method='builder()Lio/oigres/ecomm/service/orders/model/cart/InsertOrderResponse$InsertOrderResponseBuilder;' number='0'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='27'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertOrderResponse' method='builder()Lio/oigres/ecomm/service/orders/model/cart/InsertOrderResponse$InsertOrderResponseBuilder;' number='1'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='26'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='25'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='24'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='23'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='22'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='21'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='20'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='19'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='18'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='17'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertOrderResponse$InsertOrderResponseBuilder' method='build()Lio/oigres/ecomm/service/orders/model/cart/InsertOrderResponse;' number='13'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='16'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertOrderResponse$InsertOrderResponseBuilder' method='build()Lio/oigres/ecomm/service/orders/model/cart/InsertOrderResponse;' number='12'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='15'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponse' method='getOrders()Ljava/util/List;' number='0'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponse' method='getOrders()Ljava/util/List;' number='1'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponse$InsertCartResponseBuilder' method='&lt;init&gt;()V' number='0'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponse$InsertCartResponseBuilder' method='&lt;init&gt;()V' number='1'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertOrderResponse$InsertOrderResponseBuilder' method='orderId(Ljava/lang/Long;)Lio/oigres/ecomm/service/orders/model/cart/InsertOrderResponse$InsertOrderResponseBuilder;' number='0'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponse' method='&lt;init&gt;(Ljava/util/List;)V' number='0'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponse' method='&lt;init&gt;(Ljava/util/List;)V' number='1'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertOrderResponse$InsertOrderResponseBuilder' method='total(Ljava/math/BigDecimal;)Lio/oigres/ecomm/service/orders/model/cart/InsertOrderResponse$InsertOrderResponseBuilder;' number='0'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='14'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='13'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertOrderResponse$InsertOrderResponseBuilder' method='build()Lio/oigres/ecomm/service/orders/model/cart/InsertOrderResponse;' number='1'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='12'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertOrderResponse$InsertOrderResponseBuilder' method='build()Lio/oigres/ecomm/service/orders/model/cart/InsertOrderResponse;' number='0'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='11'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='10'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='9'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertOrderResponse' method='getTotal()Ljava/math/BigDecimal;' number='0'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertOrderResponse$InsertOrderResponseBuilder' method='build()Lio/oigres/ecomm/service/orders/model/cart/InsertOrderResponse;' number='5'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='8'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertOrderResponse$InsertOrderResponseBuilder' method='build()Lio/oigres/ecomm/service/orders/model/cart/InsertOrderResponse;' number='4'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='7'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertOrderResponse$InsertOrderResponseBuilder' method='build()Lio/oigres/ecomm/service/orders/model/cart/InsertOrderResponse;' number='3'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponse$InsertCartResponseBuilder' method='orders(Ljava/util/Collection;)Lio/oigres/ecomm/service/orders/model/cart/InsertCartResponse$InsertCartResponseBuilder;' number='3'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='6'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertOrderResponse' method='&lt;init&gt;(Ljava/lang/Long;Ljava/util/List;Ljava/lang/Long;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/math/BigDecimal;Ljava/math/BigDecimal;Ljava/math/BigDecimal;Ljava/math/BigDecimal;)V' number='0'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='5'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertOrderResponse' method='&lt;init&gt;(Ljava/lang/Long;Ljava/util/List;Ljava/lang/Long;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/math/BigDecimal;Ljava/math/BigDecimal;Ljava/math/BigDecimal;Ljava/math/BigDecimal;)V' number='1'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='4'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponse$InsertCartResponseBuilder' method='orders(Ljava/util/Collection;)Lio/oigres/ecomm/service/orders/model/cart/InsertCartResponse$InsertCartResponseBuilder;' number='0'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='3'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponse$InsertCartResponseBuilder' method='orders(Ljava/util/Collection;)Lio/oigres/ecomm/service/orders/model/cart/InsertCartResponse$InsertCartResponseBuilder;' number='7'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='2'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponse$InsertCartResponseBuilder' method='orders(Ljava/util/Collection;)Lio/oigres/ecomm/service/orders/model/cart/InsertCartResponse$InsertCartResponseBuilder;' number='6'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='1'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponse$InsertCartResponseBuilder' method='orders(Ljava/util/Collection;)Lio/oigres/ecomm/service/orders/model/cart/InsertCartResponse$InsertCartResponseBuilder;' number='5'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest' method='check_get_and_set()V' number='0'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponse$InsertCartResponseBuilder' method='orders(Ljava/util/Collection;)Lio/oigres/ecomm/service/orders/model/cart/InsertCartResponse$InsertCartResponseBuilder;' number='4'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponse' method='builder()Lio/oigres/ecomm/service/orders/model/cart/InsertCartResponse$InsertCartResponseBuilder;' number='1'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+<block classname='io.oigres.ecomm.service.orders.model.cart.InsertCartResponse' method='builder()Lio/oigres/ecomm/service/orders/model/cart/InsertCartResponse$InsertCartResponseBuilder;' number='0'><tests>
+<test name='io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest.[engine:junit-jupiter]/[class:io.oigres.ecomm.service.orders.model.cart.InsertCartResponseTest]/[method:check_get_and_set()]'/>
+</tests>
+</block>
+</coverage>

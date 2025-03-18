@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>OrdersServiceProxy.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Aggregated Reports</a> &gt; <a href="../index.html" class="el_bundle">orders-service-sdk</a> &gt; <a href="index.source.html" class="el_package">io.oigres.ecomm.service.orders.api</a> &gt; <span class="el_source">OrdersServiceProxy.java</span></div><h1>OrdersServiceProxy.java</h1><pre class="source lang-java linenums">/**********
+ This project is free software; you can redistribute it and/or modify it under
+ the terms of the GNU General Public License as published by the
+ Free Software Foundation; either version 3.0 of the License, or (at your
+ option) any later version. (See &lt;https://www.gnu.org/licenses/gpl-3.0.html&gt;.)
+
+ This project is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this project; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
+ **********/
+// Copyright (c) 2024-2025 Sergio Exposito.  All rights reserved.              
+
+package io.oigres.ecomm.service.orders.api;
+
+import io.oigres.ecomm.service.orders.OrderStatusEnumApi;
+import io.oigres.ecomm.service.orders.OrdersService;
+import io.oigres.ecomm.service.orders.Routes;
+import io.oigres.ecomm.service.orders.model.PageResponse;
+import io.oigres.ecomm.service.orders.model.PageableRequest;
+import io.oigres.ecomm.service.orders.model.order.*;
+import java.net.URI;
+import java.time.Duration;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriBuilder;
+
+public class OrdersServiceProxy extends MiddlewareProxy
+    implements OrdersService, AsyncOrdersService {
+
+  public OrdersServiceProxy(WebClient webClient) {
+<span class="nc" id="L38">    super(webClient);</span>
+<span class="nc" id="L39">  }</span>
+
+  public OrdersServiceProxy(final String baseUri) {
+<span class="nc" id="L42">    super(baseUri, Duration.ofMillis(2000));</span>
+<span class="nc" id="L43">  }</span>
+
+  // --------------------------------- getOrderById --------------------------------- //
+
+  private Function&lt;UriBuilder, URI&gt; getOrderById_Call(long orderId) {
+<span class="nc" id="L48">    return uriBuilder -&gt;</span>
+<span class="nc" id="L49">        uriBuilder</span>
+<span class="nc" id="L50">            .path(Routes.ORDERS_CONTROLLER_PATH.concat(Routes.GET_ORDER_BY_ID))</span>
+<span class="nc" id="L51">            .build(orderId);</span>
+  }
+
+  @Override
+  public GetOrderByIdResponse getOrderById(long orderId) {
+<span class="nc" id="L56">    return get(getOrderById_Call(orderId), GetOrderByIdResponse.class);</span>
+  }
+
+  // --------------------------------- getAllOrders --------------------------------- //
+
+  @Override
+  public PageResponse&lt;GetAllOrdersResponse&gt; getAllOrders(
+      Long dispensaryId, Long userId, OrderStatusEnumApi status, PageableRequest pageable) {
+<span class="nc" id="L64">    return getPage(</span>
+        uriBuilder -&gt;
+<span class="nc" id="L66">            uriBuilder</span>
+<span class="nc" id="L67">                .path(Routes.ORDERS_CONTROLLER_PATH)</span>
+<span class="nc" id="L68">                .queryParamIfPresent(&quot;dispensaryId&quot;, Optional.ofNullable(dispensaryId))</span>
+<span class="nc" id="L69">                .queryParamIfPresent(&quot;userId&quot;, Optional.ofNullable(userId))</span>
+<span class="nc" id="L70">                .queryParamIfPresent(&quot;status&quot;, Optional.ofNullable(status))</span>
+<span class="nc" id="L71">                .queryParam(&quot;page&quot;, pageable.getPageNumber())</span>
+<span class="nc" id="L72">                .queryParam(&quot;size&quot;, pageable.getPageSize())</span>
+<span class="nc" id="L73">                .build(dispensaryId, userId, status, pageable),</span>
+        GetAllOrdersResponse.class);
+  }
+
+  // --------------------------------- getOrdersCount --------------------------------- //
+
+  private Function&lt;UriBuilder, URI&gt; getOrdersCount_Call(
+      Long dispensaryId, Long userId, OrderStatusEnumApi status) {
+<span class="nc" id="L81">    return uriBuilder -&gt;</span>
+<span class="nc" id="L82">        uriBuilder</span>
+<span class="nc" id="L83">            .path(Routes.ORDERS_CONTROLLER_PATH.concat(Routes.GET_TOTAL_ORDERS))</span>
+<span class="nc" id="L84">            .queryParamIfPresent(&quot;dispensaryId&quot;, Optional.ofNullable(dispensaryId))</span>
+<span class="nc" id="L85">            .queryParamIfPresent(&quot;userId&quot;, Optional.ofNullable(userId))</span>
+<span class="nc" id="L86">            .queryParamIfPresent(&quot;status&quot;, Optional.ofNullable(status))</span>
+<span class="nc" id="L87">            .build(status);</span>
+  }
+
+  @Override
+  public OrdersCountResponse getOrdersCount(
+      Long dispensaryId, Long userId, OrderStatusEnumApi status) {
+<span class="nc" id="L93">    return get(getOrdersCount_Call(dispensaryId, userId, status), OrdersCountResponse.class);</span>
+  }
+
+  @Override
+  public CompletableFuture&lt;OrdersCountResponse&gt; getOrdersCountAsync(
+      Long dispensaryId, Long userId, OrderStatusEnumApi status) {
+<span class="nc" id="L99">    return getAsync(getOrdersCount_Call(dispensaryId, userId, status), OrdersCountResponse.class);</span>
+  }
+
+  // --------------------------------- changeOrderStatus --------------------------------- //
+
+  @Override
+  public ChangeCurrentOrderStatusResponse changeOrderStatus(
+      long orderId, ChangeCurrentOrderStatusRequest request) {
+<span class="nc" id="L107">    return patch(</span>
+        uriBuilder -&gt;
+<span class="nc" id="L109">            uriBuilder</span>
+<span class="nc" id="L110">                .path(Routes.ORDERS_CONTROLLER_PATH.concat(Routes.CHANGE_ORDER_STATUS))</span>
+<span class="nc" id="L111">                .build(orderId),</span>
+        request,
+        ChangeCurrentOrderStatusResponse.class);
+  }
+
+  // --------------------------------- getOrdersStatusAmount --------------------------------- //
+
+  private Function&lt;UriBuilder, URI&gt; getOrdersStatusAmount_Call(Long dispensaryId) {
+<span class="nc" id="L119">    return uriBuilder -&gt;</span>
+<span class="nc" id="L120">        uriBuilder</span>
+<span class="nc" id="L121">            .path(Routes.ORDERS_CONTROLLER_PATH.concat(Routes.GET_ORDER_STATUS_AMOUNTS))</span>
+<span class="nc" id="L122">            .build(dispensaryId);</span>
+  }
+
+  @Override
+  public OrderStatusAmountsResponse getOrdersStatusAmount(Long dispensaryId) {
+<span class="nc" id="L127">    return get(getOrdersStatusAmount_Call(dispensaryId), OrderStatusAmountsResponse.class);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

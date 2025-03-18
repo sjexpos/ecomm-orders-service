@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>OrdersController.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Aggregated Reports</a> &gt; <a href="../index.html" class="el_bundle">orders-service-rest-api</a> &gt; <a href="index.source.html" class="el_package">io.oigres.ecomm.service.orders.api</a> &gt; <span class="el_source">OrdersController.java</span></div><h1>OrdersController.java</h1><pre class="source lang-java linenums">/**********
+ This project is free software; you can redistribute it and/or modify it under
+ the terms of the GNU General Public License as published by the
+ Free Software Foundation; either version 3.0 of the License, or (at your
+ option) any later version. (See &lt;https://www.gnu.org/licenses/gpl-3.0.html&gt;.)
+
+ This project is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this project; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
+ **********/
+// Copyright (c) 2024-2025 Sergio Exposito.  All rights reserved.              
+
+package io.oigres.ecomm.service.orders.api;
+
+import io.oigres.ecomm.service.orders.OrderStatusEnumApi;
+import io.oigres.ecomm.service.orders.OrdersService;
+import io.oigres.ecomm.service.orders.Routes;
+import io.oigres.ecomm.service.orders.domain.Order;
+import io.oigres.ecomm.service.orders.domain.OrderStatus;
+import io.oigres.ecomm.service.orders.domain.Status;
+import io.oigres.ecomm.service.orders.enums.OrderStatusEnum;
+import io.oigres.ecomm.service.orders.exception.OrderNotFoundException;
+import io.oigres.ecomm.service.orders.model.NotFoundException;
+import io.oigres.ecomm.service.orders.model.PageResponse;
+import io.oigres.ecomm.service.orders.model.PageResponseImpl;
+import io.oigres.ecomm.service.orders.model.PageableRequest;
+import io.oigres.ecomm.service.orders.model.order.*;
+import io.oigres.ecomm.service.orders.usecases.orders.changeStatus.ChangeOrderStatusUseCase;
+import io.oigres.ecomm.service.orders.usecases.orders.list.GetAllOrdersUseCase;
+import io.oigres.ecomm.service.orders.usecases.orders.search.GetOrderByIdUseCase;
+import io.oigres.ecomm.service.orders.usecases.orders.search.GetOrderStatusAmountsUseCase;
+import io.oigres.ecomm.service.orders.usecases.orders.total.GetOrdersCountUseCase;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.util.MimeTypeUtils;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping(Routes.ORDERS_CONTROLLER_PATH)
+@Tag(name = &quot;Orders&quot;, description = &quot; &quot;)
+<span class="nc" id="L61">@Slf4j</span>
+@Validated
+public class OrdersController extends AbstractController implements OrdersService {
+  private final GetOrderByIdUseCase getOrderByIdUseCase;
+  private final GetAllOrdersUseCase getAllOrdersUseCase;
+  private final GetOrdersCountUseCase getOrdersCountUseCase;
+  private final ChangeOrderStatusUseCase changeOrderStatusUseCase;
+  private final GetOrderStatusAmountsUseCase getOrderStatusAmountsUseCase;
+
+  public OrdersController(
+      GetOrderByIdUseCase getOrderByIdUseCase,
+      GetAllOrdersUseCase getAllOrdersUseCase,
+      GetOrdersCountUseCase getOrdersCountUseCase,
+      ChangeOrderStatusUseCase changeOrderStatusUseCase,
+<span class="nc" id="L75">      GetOrderStatusAmountsUseCase getOrderStatusAmountsUseCase) {</span>
+<span class="nc" id="L76">    this.getOrderByIdUseCase = getOrderByIdUseCase;</span>
+<span class="nc" id="L77">    this.getAllOrdersUseCase = getAllOrdersUseCase;</span>
+<span class="nc" id="L78">    this.getOrdersCountUseCase = getOrdersCountUseCase;</span>
+<span class="nc" id="L79">    this.changeOrderStatusUseCase = changeOrderStatusUseCase;</span>
+<span class="nc" id="L80">    this.getOrderStatusAmountsUseCase = getOrderStatusAmountsUseCase;</span>
+<span class="nc" id="L81">  }</span>
+
+  @Override
+  @Operation(summary = &quot;Get order by id&quot;)
+  @GetMapping(value = Routes.GET_ORDER_BY_ID, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public GetOrderByIdResponse getOrderById(
+      @Parameter(
+              name = &quot;orderId&quot;,
+              required = true,
+              description = &quot;identifier associated with the order (1..N)&quot;)
+          @Min(value = 1, message = &quot;orderId should be greater than zero&quot;)
+          @PathVariable(name = &quot;orderId&quot;)
+          long orderId)
+      throws NotFoundException {
+<span class="nc" id="L96">    log.debug(&quot;############ call getOrderById ############&quot;);</span>
+    try {
+<span class="nc" id="L98">      Order order = getOrderByIdUseCase.handle(orderId);</span>
+<span class="nc" id="L99">      return GetOrderByIdResponse.builder()</span>
+<span class="nc" id="L100">          .id(order.getId())</span>
+<span class="nc" id="L101">          .orderDate(order.getDate())</span>
+<span class="nc" id="L102">          .userId(order.getUserId())</span>
+<span class="nc" id="L103">          .dispensaryId(order.getDispensaryId())</span>
+<span class="nc" id="L104">          .deliveryMethod(order.getDeliveryMethod().getName().getPrettyName())</span>
+<span class="nc" id="L105">          .paymentMethod(order.getPaymentMethod().getName().getPrettyName())</span>
+<span class="nc" id="L106">          .subtotal(order.getSubtotalPrice())</span>
+<span class="nc" id="L107">          .exciseTax(order.getExciseTax())</span>
+<span class="nc" id="L108">          .salesTax(order.getSalesTax())</span>
+<span class="nc" id="L109">          .total(order.getTotalPrice())</span>
+<span class="nc" id="L110">          .items(</span>
+<span class="nc" id="L111">              order.getOrderProducts().stream()</span>
+<span class="nc" id="L112">                  .map(</span>
+                      itm -&gt;
+<span class="nc" id="L114">                          OrderPublicationResponse.builder()</span>
+<span class="nc" id="L115">                              .publicationId(itm.getDispensaryProductId())</span>
+<span class="nc" id="L116">                              .price(itm.getPrice())</span>
+<span class="nc" id="L117">                              .units(itm.getUnits())</span>
+<span class="nc" id="L118">                              .build())</span>
+<span class="nc" id="L119">                  .collect(Collectors.toList()))</span>
+<span class="nc" id="L120">          .statuses(</span>
+<span class="nc" id="L121">              order.getOrderStatuses().stream()</span>
+<span class="nc" id="L122">                  .sorted(Comparator.comparing(OrderStatus::getDate))</span>
+<span class="nc" id="L123">                  .map(</span>
+                      sts -&gt;
+<span class="nc" id="L125">                          GetStatusesResponse.builder()</span>
+<span class="nc" id="L126">                              .date(sts.getDate())</span>
+<span class="nc" id="L127">                              .status(sts.getStatus().getName().name())</span>
+<span class="nc" id="L128">                              .build())</span>
+<span class="nc" id="L129">                  .collect(Collectors.toList()))</span>
+<span class="nc" id="L130">          .build();</span>
+<span class="nc" id="L131">    } catch (OrderNotFoundException e) {</span>
+<span class="nc" id="L132">      throw new NotFoundException(e.getMessage());</span>
+    }
+  }
+
+  @Override
+  @Operation(summary = &quot;Get all orders&quot;)
+  @PageableAsQueryParam
+  @GetMapping(produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public PageResponse&lt;GetAllOrdersResponse&gt; getAllOrders(
+      @RequestParam(name = &quot;dispensaryId&quot;, required = false) Long dispensaryId,
+      @RequestParam(name = &quot;userId&quot;, required = false) Long userId,
+      @RequestParam(name = &quot;status&quot;, required = false) OrderStatusEnumApi status,
+      @Parameter(hidden = true, required = true) PageableRequest pageable) {
+<span class="nc" id="L146">    log.debug(&quot;############ call getAllOrders ############&quot;);</span>
+    Page&lt;Order&gt; orders;
+    try {
+      OrderStatusEnum orderStatusEnum =
+<span class="nc bnc" id="L150" title="All 2 branches missed.">          status != null ? OrderStatusEnum.valueOf(status.name()) : null;</span>
+<span class="nc" id="L151">      orders =</span>
+<span class="nc" id="L152">          getAllOrdersUseCase.handle(</span>
+              dispensaryId,
+              userId,
+              orderStatusEnum,
+<span class="nc" id="L156">              PageRequest.of(</span>
+<span class="nc" id="L157">                  pageable.getPageNumber(), pageable.getPageSize(), Sort.by(&quot;id&quot;).ascending()));</span>
+<span class="nc" id="L158">    } catch (io.oigres.ecomm.service.orders.exception.NotFoundException e) {</span>
+<span class="nc" id="L159">      return PageResponse.empty(pageable);</span>
+<span class="nc" id="L160">    }</span>
+
+<span class="nc" id="L162">    List&lt;GetAllOrdersResponse&gt; response =</span>
+<span class="nc" id="L163">        orders.getContent().stream()</span>
+<span class="nc" id="L164">            .map(</span>
+                or -&gt; {
+<span class="nc" id="L166">                  OrderStatus sts =</span>
+<span class="nc" id="L167">                      or.getOrderStatuses().stream()</span>
+<span class="nc" id="L168">                          .max(Comparator.comparing(OrderStatus::getDate))</span>
+<span class="nc" id="L169">                          .orElseGet(</span>
+                              () -&gt;
+<span class="nc" id="L171">                                  OrderStatus.builder()</span>
+<span class="nc" id="L172">                                      .order(or)</span>
+<span class="nc" id="L173">                                      .status(</span>
+<span class="nc" id="L174">                                          Status.builder().name(OrderStatusEnum.ORDERED).build())</span>
+<span class="nc" id="L175">                                      .date(LocalDateTime.now())</span>
+<span class="nc" id="L176">                                      .build());</span>
+<span class="nc" id="L177">                  return GetAllOrdersResponse.builder()</span>
+<span class="nc" id="L178">                      .id(or.getId())</span>
+<span class="nc" id="L179">                      .orderDate(or.getDate())</span>
+<span class="nc" id="L180">                      .orderStatus(sts.getStatus().getName().name())</span>
+<span class="nc" id="L181">                      .orderStatusDate(sts.getDate())</span>
+<span class="nc" id="L182">                      .dispensaryId(or.getDispensaryId())</span>
+<span class="nc" id="L183">                      .userId(or.getUserId())</span>
+<span class="nc" id="L184">                      .total(or.getTotalPrice())</span>
+<span class="nc" id="L185">                      .items(</span>
+<span class="nc" id="L186">                          or.getOrderProducts().stream()</span>
+<span class="nc" id="L187">                              .map(</span>
+                                  pub -&gt;
+<span class="nc" id="L189">                                      OrderPublicationResponse.builder()</span>
+<span class="nc" id="L190">                                          .publicationId(pub.getDispensaryProductId())</span>
+<span class="nc" id="L191">                                          .units(pub.getUnits())</span>
+<span class="nc" id="L192">                                          .price(pub.getPrice())</span>
+<span class="nc" id="L193">                                          .build())</span>
+<span class="nc" id="L194">                              .collect(Collectors.toList()))</span>
+<span class="nc" id="L195">                      .build();</span>
+                })
+<span class="nc" id="L197">            .collect(Collectors.toList());</span>
+
+<span class="nc" id="L199">    return new PageResponseImpl&lt;&gt;(response, pageable, orders.getTotalElements());</span>
+  }
+
+  @Override
+  @Operation(summary = &quot;Get total from all orders filtered by status&quot;)
+  @PageableAsQueryParam
+  @GetMapping(value = Routes.GET_TOTAL_ORDERS, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public OrdersCountResponse getOrdersCount(
+      @RequestParam(name = &quot;dispensaryId&quot;, required = false) Long dispensaryId,
+      @RequestParam(name = &quot;userId&quot;, required = false) Long userId,
+      @RequestParam(name = &quot;status&quot;, required = false) OrderStatusEnumApi status) {
+<span class="nc" id="L211">    log.debug(&quot;############ call getOrdersCount ############&quot;);</span>
+    BigDecimal total;
+    try {
+<span class="nc" id="L214">      total = getOrdersCountUseCase.getOrdersCount(status.name());</span>
+<span class="nc" id="L215">    } catch (io.oigres.ecomm.service.orders.exception.NotFoundException e) {</span>
+<span class="nc" id="L216">      return OrdersCountResponse.builder().total(BigDecimal.ZERO).build();</span>
+<span class="nc" id="L217">    }</span>
+<span class="nc" id="L218">    return OrdersCountResponse.builder().total(total).build();</span>
+  }
+
+  @Override
+  @Operation(summary = &quot;Change order status&quot;)
+  @PageableAsQueryParam
+  @PatchMapping(value = Routes.CHANGE_ORDER_STATUS, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public ChangeCurrentOrderStatusResponse changeOrderStatus(
+      @Parameter(
+              name = &quot;orderId&quot;,
+              required = true,
+              description = &quot;identifier associated with the order (1..N)&quot;)
+          @Min(value = 1, message = &quot;orderId should be greater than zero&quot;)
+          @PathVariable(name = &quot;orderId&quot;)
+          long orderId,
+      @RequestBody @Valid ChangeCurrentOrderStatusRequest request)
+      throws NotFoundException {
+<span class="nc" id="L236">    log.debug(&quot;############ call changeOrderStatus ############&quot;);</span>
+    Order order;
+    try {
+<span class="nc" id="L239">      order = changeOrderStatusUseCase.handle(orderId, request.getDispensaryId());</span>
+<span class="nc" id="L240">    } catch (io.oigres.ecomm.service.orders.exception.NotFoundException e) {</span>
+<span class="nc" id="L241">      throw new NotFoundException(e.getMessage());</span>
+<span class="nc" id="L242">    }</span>
+<span class="nc" id="L243">    return ChangeCurrentOrderStatusResponse.builder()</span>
+<span class="nc" id="L244">        .currentStatus(order.getLastStatus().name())</span>
+<span class="nc" id="L245">        .statuses(</span>
+<span class="nc" id="L246">            order.getOrderStatuses().stream()</span>
+<span class="nc" id="L247">                .sorted(Comparator.comparing(OrderStatus::getDate))</span>
+<span class="nc" id="L248">                .map(</span>
+                    sts -&gt;
+<span class="nc" id="L250">                        GetStatusesResponse.builder()</span>
+<span class="nc" id="L251">                            .date(sts.getDate())</span>
+<span class="nc" id="L252">                            .status(sts.getStatus().getName().name())</span>
+<span class="nc" id="L253">                            .build())</span>
+<span class="nc" id="L254">                .collect(Collectors.toList()))</span>
+<span class="nc" id="L255">        .build();</span>
+  }
+
+  @Override
+  @Operation(summary = &quot;Get orders status amount&quot;)
+  @GetMapping(
+      value = Routes.GET_ORDER_STATUS_AMOUNTS,
+      produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  public OrderStatusAmountsResponse getOrdersStatusAmount(
+      @RequestParam(name = &quot;dispensaryId&quot;, required = false) Long dispensaryId) {
+<span class="nc" id="L266">    log.debug(&quot;############ call getOrdersStatusAmount ############&quot;);</span>
+    OrderStatusAmountsResponse.OrderStatusAmountsResponseBuilder builder =
+<span class="nc" id="L268">        OrderStatusAmountsResponse.builder();</span>
+<span class="nc" id="L269">    OrderStatusEnumApi.stream()</span>
+<span class="nc" id="L270">        .forEach(</span>
+            status -&gt; {
+<span class="nc" id="L272">              Long amount = null;</span>
+              try {
+<span class="nc" id="L274">                amount =</span>
+<span class="nc" id="L275">                    getOrderStatusAmountsUseCase.getOrderStatusAmount(</span>
+<span class="nc" id="L276">                        OrderStatusEnum.valueOf(status.name()), dispensaryId);</span>
+<span class="nc" id="L277">              } catch (io.oigres.ecomm.service.orders.exception.NotFoundException e) {</span>
+<span class="nc" id="L278">                log.error(&quot;Order status amount by {} status was throwing an error&quot;, status);</span>
+<span class="nc" id="L279">                log.error(e.getMessage());</span>
+<span class="nc" id="L280">              }</span>
+<span class="nc" id="L281">              builder.status(OrderStatusAmountDto.builder().name(status).amount(amount).build());</span>
+<span class="nc" id="L282">            });</span>
+<span class="nc" id="L283">    return builder.build();</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

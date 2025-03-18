@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>StockTransactionsServiceProxyEnhanced.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Aggregated Reports</a> &gt; <a href="../index.html" class="el_bundle">orders-service-spring-boot</a> &gt; <a href="index.source.html" class="el_package">io.oigres.ecomm.service.orders.rpc</a> &gt; <span class="el_source">StockTransactionsServiceProxyEnhanced.java</span></div><h1>StockTransactionsServiceProxyEnhanced.java</h1><pre class="source lang-java linenums">/**********
+ This project is free software; you can redistribute it and/or modify it under
+ the terms of the GNU General Public License as published by the
+ Free Software Foundation; either version 3.0 of the License, or (at your
+ option) any later version. (See &lt;https://www.gnu.org/licenses/gpl-3.0.html&gt;.)
+
+ This project is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this project; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
+ **********/
+// Copyright (c) 2024-2025 Sergio Exposito.  All rights reserved.              
+
+package io.oigres.ecomm.service.orders.rpc;
+
+import io.github.resilience4j.retry.annotation.Retry;
+import io.oigres.ecomm.service.products.model.StockTransactionsService;
+import io.oigres.ecomm.service.products.model.exception.NoStockException;
+import io.oigres.ecomm.service.products.model.exception.NotFoundException;
+import io.oigres.ecomm.service.products.model.exception.StockTimeOutException;
+import io.oigres.ecomm.service.products.model.stockTransactions.*;
+import java.util.List;
+
+public class StockTransactionsServiceProxyEnhanced implements StockTransactionsService {
+
+  private final StockTransactionsService delegate;
+
+<span class="nc" id="L32">  public StockTransactionsServiceProxyEnhanced(StockTransactionsService delegate) {</span>
+<span class="nc" id="L33">    this.delegate = delegate;</span>
+<span class="nc" id="L34">  }</span>
+
+  @Override
+  @Retry(name = &quot;remote-insert-stock-transactions&quot;)
+  public InsertStockTransactionResponse insertStockTransactions(
+      InsertStockTransactionRequest request)
+      throws NotFoundException, NoStockException, StockTimeOutException {
+<span class="nc" id="L41">    return delegate.insertStockTransactions(request);</span>
+  }
+
+  @Override
+  @Retry(name = &quot;remote-200-expected&quot;)
+  public void confirmStockTransactions(ConfirmStockTransactionRequest request) {
+<span class="nc" id="L47">    delegate.confirmStockTransactions(request);</span>
+<span class="nc" id="L48">  }</span>
+
+  @Override
+  @Retry(name = &quot;remote-200-expected&quot;)
+  public void revertStockTransactions(RevertStockTransactionRequest request) {
+<span class="nc" id="L53">    delegate.revertStockTransactions(request);</span>
+<span class="nc" id="L54">  }</span>
+
+  @Override
+  @Retry(
+      name = &quot;remote-200-expected&quot;,
+      fallbackMethod = &quot;fallbackMethodForGetElderStockTransactions&quot;)
+  public GetElderStockTransactionsResponse getElderStockTransactions() {
+<span class="nc" id="L61">    return delegate.getElderStockTransactions();</span>
+  }
+
+  private GetElderStockTransactionsResponse fallbackMethodForGetElderStockTransactions(
+      Exception e) {
+<span class="nc" id="L66">    return GetElderStockTransactionsResponse.builder().stockTransactionIds(List.of()).build();</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+
+
+<h1>ChangeOrderStatusUseCaseImpl.java</h1>
+
+<table class="src">
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_1'/>
+1
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_1'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>/**********</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_2'/>
+2
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_2'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> This project is free software; you can redistribute it and/or modify it under</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_3'/>
+3
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_3'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> the terms of the GNU General Public License as published by the</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_4'/>
+4
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_4'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> Free Software Foundation; either version 3.0 of the License, or (at your</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_5'/>
+5
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_5'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> option) any later version. (See &#60;https://www.gnu.org/licenses/gpl-3.0.html&#62;.)</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_6'/>
+6
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_6'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_7'/>
+7
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_7'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> This project is distributed in the hope that it will be useful, but WITHOUT</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_8'/>
+8
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_8'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_9'/>
+9
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_9'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> FOR A PARTICULAR PURPOSE.  See the GNU General Public License for</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_10'/>
+10
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_10'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> more details.</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_11'/>
+11
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_11'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_12'/>
+12
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_12'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> You should have received a copy of the GNU General Public License</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_13'/>
+13
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_13'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> along with this project; if not, write to the Free Software Foundation, Inc.,</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_14'/>
+14
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_14'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_15'/>
+15
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_15'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''> **********/</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_16'/>
+16
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_16'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>// Copyright (c) 2024-2025 Sergio Exposito.  All rights reserved.              </span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_17'/>
+17
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_17'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_18'/>
+18
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_18'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>package io.oigres.ecomm.service.orders.usecases.orders.changeStatus;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_19'/>
+19
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_19'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_20'/>
+20
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_20'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import io.oigres.ecomm.service.orders.domain.Order;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_21'/>
+21
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_21'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import io.oigres.ecomm.service.orders.domain.OrderStatus;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_22'/>
+22
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_22'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import io.oigres.ecomm.service.orders.domain.Status;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_23'/>
+23
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_23'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import io.oigres.ecomm.service.orders.enums.OrderStatusEnum;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_24'/>
+24
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_24'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import io.oigres.ecomm.service.orders.exception.NotFoundException;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_25'/>
+25
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_25'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import io.oigres.ecomm.service.orders.exception.OrderNotFoundException;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_26'/>
+26
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_26'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import io.oigres.ecomm.service.orders.repository.OrderRepository;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_27'/>
+27
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_27'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import io.oigres.ecomm.service.orders.repository.OrderStatusRepository;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_28'/>
+28
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_28'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import io.oigres.ecomm.service.orders.repository.StatusRepository;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_29'/>
+29
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_29'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.time.LocalDateTime;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_30'/>
+30
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_30'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import org.springframework.stereotype.Component;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_31'/>
+31
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_31'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_32'/>
+32
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_32'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>@Component</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_33'/>
+33
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_33'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>public class ChangeOrderStatusUseCaseImpl implements ChangeOrderStatusUseCase {</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_34'/>
+34
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_34'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  private final OrderRepository orderRepository;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_35'/>
+35
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_35'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  private final StatusRepository statusRepository;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_36'/>
+36
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_36'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  private final OrderStatusRepository orderStatusRepository;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_37'/>
+37
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_37'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_38'/>
+38
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_38'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  public ChangeOrderStatusUseCaseImpl(</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_39'/>
+39
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_39'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>      OrderRepository orderRepository,</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_40'/>
+40
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_40'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>      StatusRepository statusRepository,</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_41'/>
+41
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_41'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class=''>      OrderStatusRepository orderStatusRepository) {</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_42'/>
+42
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_42'>1</a>
+<span>
+1. &#60;init&#62; : Removed assignment to member variable orderRepository &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class='survived'>    this.orderRepository = orderRepository;</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_43'/>
+43
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_43'>1</a>
+<span>
+1. &#60;init&#62; : Removed assignment to member variable statusRepository &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class='survived'>    this.statusRepository = statusRepository;</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_44'/>
+44
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_44'>1</a>
+<span>
+1. &#60;init&#62; : Removed assignment to member variable orderStatusRepository &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class='survived'>    this.orderStatusRepository = orderStatusRepository;</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_45'/>
+45
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_45'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class=''>  }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_46'/>
+46
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_46'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_47'/>
+47
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_47'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  @Override</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_48'/>
+48
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_48'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  public Order handle(long orderId, long dispensaryId) throws NotFoundException {</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_49'/>
+49
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_49'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class=''>    Order order =</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_50'/>
+50
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_50'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        orderRepository</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_51'/>
+51
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_51'>1</a>
+<span>
+1. handle : removed call to io/oigres/ecomm/service/orders/repository/OrderRepository::findByIdAndDispensaryId &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class='survived'>            .findByIdAndDispensaryId(orderId, dispensaryId)</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_52'/>
+52
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_52'>1</a>
+<span>
+1. handle : removed call to java/util/Optional::orElseThrow &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class='survived'>            .orElseThrow(OrderNotFoundException::new);</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_53'/>
+53
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_53'>1</a>
+<span>
+1. handle : removed call to io/oigres/ecomm/service/orders/domain/Order::getLastStatus &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class='survived'>    OrderStatusEnum currentStatus = order.getLastStatus();</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_54'/>
+54
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_54'>2</a>
+<span>
+1. handle : removed call to io/oigres/ecomm/service/orders/enums/OrderStatusEnum::getNextStatus &rarr; NO_COVERAGE<br/>
+2. handle : replaced call to io/oigres/ecomm/service/orders/enums/OrderStatusEnum::getNextStatus with argument &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class='survived'>    OrderStatusEnum nextStatus = OrderStatusEnum.getNextStatus(currentStatus);</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_55'/>
+55
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_55'>1</a>
+<span>
+1. handle : removed call to io/oigres/ecomm/service/orders/domain/Order::setLastStatus &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class='survived'>    order.setLastStatus(nextStatus);</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_56'/>
+56
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_56'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class=''>    Status newStatus =</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_57'/>
+57
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_57'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        statusRepository</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_58'/>
+58
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_58'>1</a>
+<span>
+1. handle : removed call to io/oigres/ecomm/service/orders/repository/StatusRepository::findByName &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class='survived'>            .findByName(nextStatus)</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_59'/>
+59
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_59'>3</a>
+<span>
+1. lambda$handle$0 : replaced return value with null for io/oigres/ecomm/service/orders/usecases/orders/changeStatus/ChangeOrderStatusUseCaseImpl::lambda$handle$0 &rarr; NO_COVERAGE<br/>
+2. handle : removed call to java/util/Optional::orElseThrow &rarr; NO_COVERAGE<br/>
+3. lambda$handle$0 : removed call to io/oigres/ecomm/service/orders/exception/NotFoundException::&#60;init&#62; &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class='survived'>            .orElseThrow(() -&#62; new NotFoundException(&#34;Status not found&#34;));</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_60'/>
+60
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_60'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    OrderStatus newOrderStatus =</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_61'/>
+61
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_61'>9</a>
+<span>
+1. handle : removed call to io/oigres/ecomm/service/orders/domain/OrderStatus$OrderStatusBuilder::date &rarr; NO_COVERAGE<br/>
+2. handle : removed call to io/oigres/ecomm/service/orders/domain/OrderStatus::builder &rarr; NO_COVERAGE<br/>
+3. handle : removed call to io/oigres/ecomm/service/orders/domain/OrderStatus$OrderStatusBuilder::order &rarr; NO_COVERAGE<br/>
+4. handle : removed call to io/oigres/ecomm/service/orders/domain/OrderStatus$OrderStatusBuilder::status &rarr; NO_COVERAGE<br/>
+5. handle : removed call to io/oigres/ecomm/service/orders/domain/OrderStatus$OrderStatusBuilder::build &rarr; NO_COVERAGE<br/>
+6. handle : removed call to java/time/LocalDateTime::now &rarr; NO_COVERAGE<br/>
+7. handle : replaced call to io/oigres/ecomm/service/orders/domain/OrderStatus$OrderStatusBuilder::status with receiver &rarr; NO_COVERAGE<br/>
+8. handle : replaced call to io/oigres/ecomm/service/orders/domain/OrderStatus$OrderStatusBuilder::order with receiver &rarr; NO_COVERAGE<br/>
+9. handle : replaced call to io/oigres/ecomm/service/orders/domain/OrderStatus$OrderStatusBuilder::date with receiver &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class='survived'>        OrderStatus.builder().status(newStatus).order(order).date(LocalDateTime.now()).build();</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_62'/>
+62
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_62'>2</a>
+<span>
+1. handle : removed call to io/oigres/ecomm/service/orders/repository/OrderStatusRepository::save &rarr; NO_COVERAGE<br/>
+2. handle : replaced call to io/oigres/ecomm/service/orders/repository/OrderStatusRepository::save with argument &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class='survived'>    orderStatusRepository.save(newOrderStatus);</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_63'/>
+63
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_63'>2</a>
+<span>
+1. handle : replaced call to io/oigres/ecomm/service/orders/repository/OrderRepository::save with argument &rarr; NO_COVERAGE<br/>
+2. handle : removed call to io/oigres/ecomm/service/orders/repository/OrderRepository::save &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class='survived'>    orderRepository.save(order);</span></pre></td></tr>
+
+<tr>
+<td class='uncovered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_64'/>
+64
+</td>
+<td class='survived'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_64'>1</a>
+<span>
+1. handle : replaced return value with null for io/oigres/ecomm/service/orders/usecases/orders/changeStatus/ChangeOrderStatusUseCaseImpl::handle &rarr; NO_COVERAGE<br/>
+
+</span>
+</span>
+</td>
+<td class='uncovered'><pre><span  class='survived'>    return order;</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_65'/>
+65
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_65'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  }</span></pre></td></tr>
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@4eb89339_66'/>
+66
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_66'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>}</span></pre></td></tr>
+
+
+
+<tr><td></td><td></td><td><h2>Mutations</h2></td></tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@4eb89339_42'>42</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_42'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>&#60;init&#62;<br/><b>Killed by : </b></span></span> Removed assignment to member variable orderRepository &rarr; NO_COVERAGE</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@4eb89339_43'>43</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_43'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>&#60;init&#62;<br/><b>Killed by : </b></span></span> Removed assignment to member variable statusRepository &rarr; NO_COVERAGE</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@4eb89339_44'>44</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_44'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>&#60;init&#62;<br/><b>Killed by : </b></span></span> Removed assignment to member variable orderStatusRepository &rarr; NO_COVERAGE</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@4eb89339_51'>51</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_51'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>handle<br/><b>Killed by : </b></span></span> removed call to io/oigres/ecomm/service/orders/repository/OrderRepository::findByIdAndDispensaryId &rarr; NO_COVERAGE</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@4eb89339_52'>52</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_52'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>handle<br/><b>Killed by : </b></span></span> removed call to java/util/Optional::orElseThrow &rarr; NO_COVERAGE</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@4eb89339_53'>53</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_53'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>handle<br/><b>Killed by : </b></span></span> removed call to io/oigres/ecomm/service/orders/domain/Order::getLastStatus &rarr; NO_COVERAGE</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@4eb89339_54'>54</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_54'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>handle<br/><b>Killed by : </b></span></span> removed call to io/oigres/ecomm/service/orders/enums/OrderStatusEnum::getNextStatus &rarr; NO_COVERAGE</span>
+</div> <p class='NO_COVERAGE'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>handle<br/><b>Killed by : </b></span></span> replaced call to io/oigres/ecomm/service/orders/enums/OrderStatusEnum::getNextStatus with argument &rarr; NO_COVERAGE</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@4eb89339_55'>55</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_55'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>handle<br/><b>Killed by : </b></span></span> removed call to io/oigres/ecomm/service/orders/domain/Order::setLastStatus &rarr; NO_COVERAGE</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@4eb89339_58'>58</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_58'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>handle<br/><b>Killed by : </b></span></span> removed call to io/oigres/ecomm/service/orders/repository/StatusRepository::findByName &rarr; NO_COVERAGE</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@4eb89339_59'>59</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_59'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>lambda$handle$0<br/><b>Killed by : </b></span></span> replaced return value with null for io/oigres/ecomm/service/orders/usecases/orders/changeStatus/ChangeOrderStatusUseCaseImpl::lambda$handle$0 &rarr; NO_COVERAGE</span>
+</div> <p class='NO_COVERAGE'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>handle<br/><b>Killed by : </b></span></span> removed call to java/util/Optional::orElseThrow &rarr; NO_COVERAGE</span>
+</div> <p class='NO_COVERAGE'><span class='pop'>3.<span><b>3</b><br/><b>Location : </b>lambda$handle$0<br/><b>Killed by : </b></span></span> removed call to io/oigres/ecomm/service/orders/exception/NotFoundException::&#60;init&#62; &rarr; NO_COVERAGE</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@4eb89339_61'>61</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_61'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>handle<br/><b>Killed by : </b></span></span> removed call to io/oigres/ecomm/service/orders/domain/OrderStatus$OrderStatusBuilder::date &rarr; NO_COVERAGE</span>
+</div> <p class='NO_COVERAGE'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>handle<br/><b>Killed by : </b></span></span> removed call to io/oigres/ecomm/service/orders/domain/OrderStatus::builder &rarr; NO_COVERAGE</span>
+</div> <p class='NO_COVERAGE'><span class='pop'>3.<span><b>3</b><br/><b>Location : </b>handle<br/><b>Killed by : </b></span></span> removed call to io/oigres/ecomm/service/orders/domain/OrderStatus$OrderStatusBuilder::order &rarr; NO_COVERAGE</span>
+</div> <p class='NO_COVERAGE'><span class='pop'>4.<span><b>4</b><br/><b>Location : </b>handle<br/><b>Killed by : </b></span></span> removed call to io/oigres/ecomm/service/orders/domain/OrderStatus$OrderStatusBuilder::status &rarr; NO_COVERAGE</span>
+</div> <p class='NO_COVERAGE'><span class='pop'>5.<span><b>5</b><br/><b>Location : </b>handle<br/><b>Killed by : </b></span></span> removed call to io/oigres/ecomm/service/orders/domain/OrderStatus$OrderStatusBuilder::build &rarr; NO_COVERAGE</span>
+</div> <p class='NO_COVERAGE'><span class='pop'>6.<span><b>6</b><br/><b>Location : </b>handle<br/><b>Killed by : </b></span></span> removed call to java/time/LocalDateTime::now &rarr; NO_COVERAGE</span>
+</div> <p class='NO_COVERAGE'><span class='pop'>7.<span><b>7</b><br/><b>Location : </b>handle<br/><b>Killed by : </b></span></span> replaced call to io/oigres/ecomm/service/orders/domain/OrderStatus$OrderStatusBuilder::status with receiver &rarr; NO_COVERAGE</span>
+</div> <p class='NO_COVERAGE'><span class='pop'>8.<span><b>8</b><br/><b>Location : </b>handle<br/><b>Killed by : </b></span></span> replaced call to io/oigres/ecomm/service/orders/domain/OrderStatus$OrderStatusBuilder::order with receiver &rarr; NO_COVERAGE</span>
+</div> <p class='NO_COVERAGE'><span class='pop'>9.<span><b>9</b><br/><b>Location : </b>handle<br/><b>Killed by : </b></span></span> replaced call to io/oigres/ecomm/service/orders/domain/OrderStatus$OrderStatusBuilder::date with receiver &rarr; NO_COVERAGE</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@4eb89339_62'>62</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_62'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>handle<br/><b>Killed by : </b></span></span> removed call to io/oigres/ecomm/service/orders/repository/OrderStatusRepository::save &rarr; NO_COVERAGE</span>
+</div> <p class='NO_COVERAGE'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>handle<br/><b>Killed by : </b></span></span> replaced call to io/oigres/ecomm/service/orders/repository/OrderStatusRepository::save with argument &rarr; NO_COVERAGE</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@4eb89339_63'>63</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_63'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>handle<br/><b>Killed by : </b></span></span> replaced call to io/oigres/ecomm/service/orders/repository/OrderRepository::save with argument &rarr; NO_COVERAGE</span>
+</div> <p class='NO_COVERAGE'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>handle<br/><b>Killed by : </b></span></span> removed call to io/oigres/ecomm/service/orders/repository/OrderRepository::save &rarr; NO_COVERAGE</span>
+</div> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@4eb89339_64'>64</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@4eb89339_64'/> 
+
+<p class='NO_COVERAGE'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>handle<br/><b>Killed by : </b></span></span> replaced return value with null for io/oigres/ecomm/service/orders/usecases/orders/changeStatus/ChangeOrderStatusUseCaseImpl::handle &rarr; NO_COVERAGE</span>
+</div> 
+</td>
+</tr>
+
+</table>
+
+
+<h2>Active mutators</h2>
+<ul>
+</ul>
+
+<h2>Tests examined</h2>
+<ul>
+</ul>
+
+<br/>
+
+Report generated by <a href='https://pitest.org'>PIT</a> 1.16.2
+
+</body>
+</html>

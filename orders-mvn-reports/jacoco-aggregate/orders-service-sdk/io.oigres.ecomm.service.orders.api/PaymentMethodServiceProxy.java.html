@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>PaymentMethodServiceProxy.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Aggregated Reports</a> &gt; <a href="../index.html" class="el_bundle">orders-service-sdk</a> &gt; <a href="index.source.html" class="el_package">io.oigres.ecomm.service.orders.api</a> &gt; <span class="el_source">PaymentMethodServiceProxy.java</span></div><h1>PaymentMethodServiceProxy.java</h1><pre class="source lang-java linenums">/**********
+ This project is free software; you can redistribute it and/or modify it under
+ the terms of the GNU General Public License as published by the
+ Free Software Foundation; either version 3.0 of the License, or (at your
+ option) any later version. (See &lt;https://www.gnu.org/licenses/gpl-3.0.html&gt;.)
+
+ This project is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this project; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
+ **********/
+// Copyright (c) 2024-2025 Sergio Exposito.  All rights reserved.              
+
+package io.oigres.ecomm.service.orders.api;
+
+import io.oigres.ecomm.service.orders.PaymentMethodsService;
+import io.oigres.ecomm.service.orders.Routes;
+import io.oigres.ecomm.service.orders.model.JacksonPageImpl;
+import io.oigres.ecomm.service.orders.model.PageResponse;
+import io.oigres.ecomm.service.orders.model.PageableRequest;
+import io.oigres.ecomm.service.orders.model.cart.GetAllPaymentMethodsResponse;
+import java.time.Duration;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.client.WebClient;
+
+public class PaymentMethodServiceProxy extends MiddlewareProxy implements PaymentMethodsService {
+  public PaymentMethodServiceProxy(WebClient webClient) {
+<span class="nc" id="L34">    super(webClient);</span>
+<span class="nc" id="L35">  }</span>
+
+  public PaymentMethodServiceProxy(final String baseUri) {
+<span class="nc" id="L38">    super(baseUri, Duration.ofMillis(2000));</span>
+<span class="nc" id="L39">  }</span>
+
+  @Override
+  public PageResponse&lt;GetAllPaymentMethodsResponse&gt; getAllPaymentMethods(PageableRequest pageable) {
+<span class="nc" id="L43">    ParameterizedTypeReference&lt;JacksonPageImpl&lt;GetAllPaymentMethodsResponse&gt;&gt; typeReference =</span>
+<span class="nc" id="L44">        new ParameterizedTypeReference&lt;&gt;() {};</span>
+<span class="nc" id="L45">    return getWebClient()</span>
+<span class="nc" id="L46">        .get()</span>
+<span class="nc" id="L47">        .uri(</span>
+            uriBuilder -&gt;
+<span class="nc" id="L49">                uriBuilder</span>
+<span class="nc" id="L50">                    .path(Routes.CARTS_CONTROLLER_PATH.concat(Routes.GET_ALL_PAYMENT_METHODS))</span>
+<span class="nc" id="L51">                    .queryParam(&quot;page&quot;, pageable.getPageNumber())</span>
+<span class="nc" id="L52">                    .queryParam(&quot;size&quot;, pageable.getPageSize())</span>
+<span class="nc" id="L53">                    .build(pageable))</span>
+<span class="nc" id="L54">        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)</span>
+<span class="nc" id="L55">        .accept(MediaType.APPLICATION_JSON)</span>
+<span class="nc" id="L56">        .retrieve()</span>
+<span class="nc" id="L57">        .bodyToMono(typeReference)</span>
+<span class="nc" id="L58">        .block();</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

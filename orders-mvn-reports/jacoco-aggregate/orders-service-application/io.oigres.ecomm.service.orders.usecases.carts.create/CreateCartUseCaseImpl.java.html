@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>CreateCartUseCaseImpl.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Aggregated Reports</a> &gt; <a href="../index.html" class="el_bundle">orders-service-application</a> &gt; <a href="index.source.html" class="el_package">io.oigres.ecomm.service.orders.usecases.carts.create</a> &gt; <span class="el_source">CreateCartUseCaseImpl.java</span></div><h1>CreateCartUseCaseImpl.java</h1><pre class="source lang-java linenums">/**********
+ This project is free software; you can redistribute it and/or modify it under
+ the terms of the GNU General Public License as published by the
+ Free Software Foundation; either version 3.0 of the License, or (at your
+ option) any later version. (See &lt;https://www.gnu.org/licenses/gpl-3.0.html&gt;.)
+
+ This project is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this project; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
+ **********/
+// Copyright (c) 2024-2025 Sergio Exposito.  All rights reserved.              
+
+package io.oigres.ecomm.service.orders.usecases.carts.create;
+
+import io.oigres.ecomm.service.orders.domain.*;
+import io.oigres.ecomm.service.orders.enums.DeliveryMethodEnum;
+import io.oigres.ecomm.service.orders.enums.OrderStatusEnum;
+import io.oigres.ecomm.service.orders.enums.PaymentMethodEnum;
+import io.oigres.ecomm.service.orders.exception.CreateCartException;
+import io.oigres.ecomm.service.orders.model.carts.InsertCartRequestDTO;
+import io.oigres.ecomm.service.orders.model.carts.InsertCartResponseDTO;
+import io.oigres.ecomm.service.orders.model.carts.InsertOrderPublicationResponseDTO;
+import io.oigres.ecomm.service.orders.model.carts.InsertOrderResponseDTO;
+import io.oigres.ecomm.service.orders.repository.*;
+import io.oigres.ecomm.service.products.model.StockTransactionsService;
+import io.oigres.ecomm.service.products.model.exception.NoStockException;
+import io.oigres.ecomm.service.products.model.exception.NotFoundException;
+import io.oigres.ecomm.service.products.model.exception.StockTimeOutException;
+import io.oigres.ecomm.service.products.model.stockTransactions.*;
+import io.oigres.ecomm.service.users.api.UsersService;
+import io.oigres.ecomm.service.users.api.model.consumer.GetConsumerStateTax;
+import jakarta.transaction.Transactional;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
+import org.springframework.data.util.Pair;
+import org.springframework.stereotype.Component;
+
+@Component
+public class CreateCartUseCaseImpl implements CreateCartUseCase {
+  private final StockTransactionsService stockTransactionsService;
+  private final UsersService usersService;
+  private final CartRepository cartRepository;
+  private final OrderRepository orderRepository;
+  private final OrderStatusRepository orderStatusRepository;
+  private final OrderProductRepository orderProductRepository;
+  private final PaymentMethodRepository paymentMethodRepository;
+  private final DeliveryMethodRepository deliveryMethodRepository;
+  private final StatusRepository statusRepository;
+
+  public CreateCartUseCaseImpl(
+      StockTransactionsService stockTransactionsService,
+      UsersService usersService,
+      CartRepository cartRepository,
+      OrderRepository orderRepository,
+      OrderStatusRepository orderStatusRepository,
+      OrderProductRepository orderProductRepository,
+      PaymentMethodRepository paymentMethodRepository,
+      DeliveryMethodRepository deliveryMethodRepository,
+<span class="nc" id="L66">      StatusRepository statusRepository) {</span>
+<span class="nc" id="L67">    this.stockTransactionsService = stockTransactionsService;</span>
+<span class="nc" id="L68">    this.usersService = usersService;</span>
+<span class="nc" id="L69">    this.cartRepository = cartRepository;</span>
+<span class="nc" id="L70">    this.orderRepository = orderRepository;</span>
+<span class="nc" id="L71">    this.orderStatusRepository = orderStatusRepository;</span>
+<span class="nc" id="L72">    this.orderProductRepository = orderProductRepository;</span>
+<span class="nc" id="L73">    this.paymentMethodRepository = paymentMethodRepository;</span>
+<span class="nc" id="L74">    this.deliveryMethodRepository = deliveryMethodRepository;</span>
+<span class="nc" id="L75">    this.statusRepository = statusRepository;</span>
+<span class="nc" id="L76">  }</span>
+
+  @Override
+  @Transactional
+  public InsertCartResponseDTO handle(InsertCartRequestDTO request)
+      throws NotFoundException,
+          StockTimeOutException,
+          NoStockException,
+          io.oigres.ecomm.service.users.api.model.exception.NotFoundException,
+          io.oigres.ecomm.service.orders.exception.NotFoundException,
+          CreateCartException {
+<span class="nc" id="L87">    InsertStockTransactionResponse response =</span>
+<span class="nc" id="L88">        stockTransactionsService.insertStockTransactions(</span>
+<span class="nc" id="L89">            InsertStockTransactionRequest.builder()</span>
+<span class="nc" id="L90">                .publications(</span>
+<span class="nc" id="L91">                    request.getPublications().stream()</span>
+<span class="nc" id="L92">                        .map(</span>
+                            pub -&gt;
+<span class="nc" id="L94">                                PublicationWithAmountRequest.builder()</span>
+<span class="nc" id="L95">                                    .publicationId(pub.getPublicationId())</span>
+<span class="nc" id="L96">                                    .amount(pub.getAmount())</span>
+<span class="nc" id="L97">                                    .build())</span>
+<span class="nc" id="L98">                        .collect(Collectors.toList()))</span>
+<span class="nc" id="L99">                .build());</span>
+    try {
+<span class="nc" id="L101">      PaymentMethod paymentMethod =</span>
+          paymentMethodRepository
+<span class="nc" id="L103">              .findByName(PaymentMethodEnum.CASH)</span>
+<span class="nc" id="L104">              .orElseThrow(</span>
+                  () -&gt;
+<span class="nc" id="L106">                      new io.oigres.ecomm.service.orders.exception.NotFoundException(</span>
+                          &quot;Payment method not found&quot;));
+<span class="nc" id="L108">      DeliveryMethod deliveryMethod =</span>
+          deliveryMethodRepository
+<span class="nc" id="L110">              .findByName(DeliveryMethodEnum.PICK_UP)</span>
+<span class="nc" id="L111">              .orElseThrow(</span>
+                  () -&gt;
+<span class="nc" id="L113">                      new io.oigres.ecomm.service.orders.exception.NotFoundException(</span>
+                          &quot;Delivery method not found&quot;));
+<span class="nc" id="L115">      Status status =</span>
+          statusRepository
+<span class="nc" id="L117">              .findByName(OrderStatusEnum.ORDERED)</span>
+<span class="nc" id="L118">              .orElseThrow(</span>
+                  () -&gt;
+<span class="nc" id="L120">                      new io.oigres.ecomm.service.orders.exception.NotFoundException(</span>
+                          &quot;Status not found&quot;));
+<span class="nc" id="L122">      GetConsumerStateTax tax = usersService.getStateTaxByUserId(request.getUserId());</span>
+<span class="nc" id="L123">      Map&lt;Long, BigDecimal&gt; commissionPerDispensary =</span>
+<span class="nc" id="L124">          response.getTransactions().stream()</span>
+<span class="nc" id="L125">              .map(tr -&gt; Pair.of(tr.getPublicationDispensaryId(), tr.getDispensaryCommission()))</span>
+<span class="nc" id="L126">              .distinct()</span>
+<span class="nc" id="L127">              .collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));</span>
+<span class="nc" id="L128">      Map&lt;Long, List&lt;PublicationWithTransactionResponse&gt;&gt; publicationsPerDispensary =</span>
+<span class="nc" id="L129">          response.getTransactions().stream()</span>
+<span class="nc" id="L130">              .collect(</span>
+<span class="nc" id="L131">                  Collectors.groupingBy(</span>
+                      PublicationWithTransactionResponse::getPublicationDispensaryId));
+<span class="nc" id="L133">      Cart cart = Cart.builder().userId(request.getUserId()).date(LocalDateTime.now()).build();</span>
+<span class="nc" id="L134">      cart = cartRepository.save(cart);</span>
+<span class="nc" id="L135">      List&lt;Order&gt; orders = new ArrayList&lt;&gt;();</span>
+      for (Map.Entry&lt;Long, List&lt;PublicationWithTransactionResponse&gt;&gt; entry :
+<span class="nc bnc" id="L137" title="All 2 branches missed.">          publicationsPerDispensary.entrySet()) {</span>
+<span class="nc" id="L138">        BigDecimal subtotal = BigDecimal.ZERO;</span>
+<span class="nc" id="L139">        Set&lt;OrderProduct&gt; products = new HashSet&lt;&gt;();</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">        for (PublicationWithTransactionResponse transaction : entry.getValue()) {</span>
+          OrderProduct orderProduct =
+<span class="nc" id="L142">              OrderProduct.builder()</span>
+<span class="nc" id="L143">                  .dispensaryProductId(transaction.getPublicationId())</span>
+<span class="nc" id="L144">                  .units(transaction.getReservedAmount())</span>
+<span class="nc" id="L145">                  .price(transaction.getPublicationPrice())</span>
+<span class="nc" id="L146">                  .transactionId(transaction.getTransactionId())</span>
+<span class="nc" id="L147">                  .build();</span>
+<span class="nc" id="L148">          subtotal =</span>
+<span class="nc" id="L149">              subtotal.add(</span>
+                  transaction
+<span class="nc" id="L151">                      .getPublicationPrice()</span>
+<span class="nc" id="L152">                      .multiply(BigDecimal.valueOf(transaction.getReservedAmount())));</span>
+<span class="nc" id="L153">          products.add(orderProduct);</span>
+<span class="nc" id="L154">        }</span>
+<span class="nc" id="L155">        BigDecimal exciseTax = subtotal.multiply(tax.getTax());</span>
+<span class="nc" id="L156">        BigDecimal salesTax = subtotal.multiply(commissionPerDispensary.get(entry.getKey()));</span>
+<span class="nc" id="L157">        BigDecimal total = subtotal.add(exciseTax).add(salesTax);</span>
+        OrderStatus orderStatus =
+<span class="nc" id="L159">            OrderStatus.builder().date(LocalDateTime.now()).status(status).build();</span>
+        Order order =
+<span class="nc" id="L161">            Order.builder()</span>
+<span class="nc" id="L162">                .userId(request.getUserId())</span>
+<span class="nc" id="L163">                .dispensaryId(entry.getKey())</span>
+<span class="nc" id="L164">                .cart(cart)</span>
+<span class="nc" id="L165">                .date(LocalDateTime.now())</span>
+<span class="nc" id="L166">                .paymentMethod(paymentMethod)</span>
+<span class="nc" id="L167">                .deliveryMethod(deliveryMethod)</span>
+<span class="nc" id="L168">                .orderStatuses(Set.of(orderStatus))</span>
+<span class="nc" id="L169">                .orderProducts(products)</span>
+<span class="nc" id="L170">                .subtotalPrice(subtotal)</span>
+<span class="nc" id="L171">                .exciseTax(exciseTax)</span>
+<span class="nc" id="L172">                .salesTax(salesTax)</span>
+<span class="nc" id="L173">                .totalPrice(total)</span>
+<span class="nc" id="L174">                .lastStatus(OrderStatusEnum.ORDERED)</span>
+<span class="nc" id="L175">                .build();</span>
+<span class="nc" id="L176">        orders.add(order);</span>
+<span class="nc" id="L177">        order = orderRepository.save(order);</span>
+<span class="nc" id="L178">        orderStatus.setOrder(order);</span>
+<span class="nc" id="L179">        orderStatusRepository.save(orderStatus);</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">        for (OrderProduct pr : products) {</span>
+<span class="nc" id="L181">          pr.setOrder(order);</span>
+<span class="nc" id="L182">          orderProductRepository.save(pr);</span>
+<span class="nc" id="L183">        }</span>
+<span class="nc" id="L184">      }</span>
+<span class="nc" id="L185">      stockTransactionsService.confirmStockTransactions(</span>
+<span class="nc" id="L186">          ConfirmStockTransactionRequest.builder()</span>
+<span class="nc" id="L187">              .transactionIds(</span>
+<span class="nc" id="L188">                  response.getTransactions().stream()</span>
+<span class="nc" id="L189">                      .map(PublicationWithTransactionResponse::getTransactionId)</span>
+<span class="nc" id="L190">                      .collect(Collectors.toList()))</span>
+<span class="nc" id="L191">              .build());</span>
+<span class="nc" id="L192">      return InsertCartResponseDTO.builder()</span>
+<span class="nc" id="L193">          .orders(</span>
+<span class="nc" id="L194">              orders.stream()</span>
+<span class="nc" id="L195">                  .map(</span>
+                      or -&gt;
+<span class="nc" id="L197">                          InsertOrderResponseDTO.builder()</span>
+<span class="nc" id="L198">                              .orderId(or.getId())</span>
+<span class="nc" id="L199">                              .dispensaryId(or.getDispensaryId())</span>
+<span class="nc" id="L200">                              .publications(</span>
+<span class="nc" id="L201">                                  or.getOrderProducts().stream()</span>
+<span class="nc" id="L202">                                      .map(</span>
+                                          pub -&gt;
+<span class="nc" id="L204">                                              InsertOrderPublicationResponseDTO.builder()</span>
+<span class="nc" id="L205">                                                  .publicationId(pub.getDispensaryProductId())</span>
+<span class="nc" id="L206">                                                  .amount(pub.getUnits())</span>
+<span class="nc" id="L207">                                                  .price(pub.getPrice())</span>
+<span class="nc" id="L208">                                                  .build())</span>
+<span class="nc" id="L209">                                      .collect(Collectors.toList()))</span>
+<span class="nc" id="L210">                              .deliveryMethod(or.getDeliveryMethod().getName().getPrettyName())</span>
+<span class="nc" id="L211">                              .paymentMethod(or.getPaymentMethod().getName().getPrettyName())</span>
+<span class="nc" id="L212">                              .status(or.getLastStatus().name())</span>
+<span class="nc" id="L213">                              .subtotal(or.getSubtotalPrice())</span>
+<span class="nc" id="L214">                              .exciseTax(or.getExciseTax())</span>
+<span class="nc" id="L215">                              .salesTax(or.getSalesTax())</span>
+<span class="nc" id="L216">                              .total(or.getTotalPrice())</span>
+<span class="nc" id="L217">                              .build())</span>
+<span class="nc" id="L218">                  .collect(Collectors.toList()))</span>
+<span class="nc" id="L219">          .build();</span>
+<span class="nc" id="L220">    } catch (Exception e) {</span>
+<span class="nc" id="L221">      stockTransactionsService.revertStockTransactions(</span>
+<span class="nc" id="L222">          RevertStockTransactionRequest.builder()</span>
+<span class="nc" id="L223">              .transactionIds(</span>
+<span class="nc" id="L224">                  response.getTransactions().stream()</span>
+<span class="nc" id="L225">                      .map(PublicationWithTransactionResponse::getTransactionId)</span>
+<span class="nc" id="L226">                      .collect(Collectors.toList()))</span>
+<span class="nc" id="L227">              .build());</span>
+<span class="nc" id="L228">      throw new CreateCartException(e.getMessage());</span>
+    }
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

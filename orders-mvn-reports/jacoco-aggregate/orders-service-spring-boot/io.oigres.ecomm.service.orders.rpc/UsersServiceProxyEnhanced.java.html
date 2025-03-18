@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>UsersServiceProxyEnhanced.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">Aggregated Reports</a> &gt; <a href="../index.html" class="el_bundle">orders-service-spring-boot</a> &gt; <a href="index.source.html" class="el_package">io.oigres.ecomm.service.orders.rpc</a> &gt; <span class="el_source">UsersServiceProxyEnhanced.java</span></div><h1>UsersServiceProxyEnhanced.java</h1><pre class="source lang-java linenums">/**********
+ This project is free software; you can redistribute it and/or modify it under
+ the terms of the GNU General Public License as published by the
+ Free Software Foundation; either version 3.0 of the License, or (at your
+ option) any later version. (See &lt;https://www.gnu.org/licenses/gpl-3.0.html&gt;.)
+
+ This project is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this project; if not, write to the Free Software Foundation, Inc.,
+ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
+ **********/
+// Copyright (c) 2024-2025 Sergio Exposito.  All rights reserved.              
+
+package io.oigres.ecomm.service.orders.rpc;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.oigres.ecomm.service.users.api.UsersService;
+import io.oigres.ecomm.service.users.api.model.*;
+import io.oigres.ecomm.service.users.api.model.admin.*;
+import io.oigres.ecomm.service.users.api.model.consumer.*;
+import io.oigres.ecomm.service.users.api.model.dispensary.*;
+import io.oigres.ecomm.service.users.api.model.exception.*;
+import io.oigres.ecomm.service.users.api.model.exception.profile.ProfileEnableStatusExceptionResponseApi;
+import io.oigres.ecomm.service.users.api.model.exception.profile.ProfileException;
+import io.oigres.ecomm.service.users.api.model.exception.profile.ProfileNotFoundException;
+import io.oigres.ecomm.service.users.api.model.exception.profile.ProfileTypeNotFoundException;
+import io.oigres.ecomm.service.users.api.model.profile.ActiveStatusProfileResponse;
+
+public class UsersServiceProxyEnhanced implements UsersService {
+
+  private final UsersService delegate;
+
+<span class="nc" id="L37">  public UsersServiceProxyEnhanced(UsersService delegate) {</span>
+<span class="nc" id="L38">    this.delegate = delegate;</span>
+<span class="nc" id="L39">  }</span>
+
+  @Override
+  public PageResponse&lt;GetAllUsersResponse&gt; getAllUsers(PageableRequest pageable) {
+<span class="nc" id="L43">    return delegate.getAllUsers(pageable);</span>
+  }
+
+  @Override
+  public CreateAdminUserResponse createNewAdminUser(CreateAdminUserRequest request)
+      throws ProfileException, ProfileTypeNotFoundException {
+<span class="nc" id="L49">    return delegate.createNewAdminUser(request);</span>
+  }
+
+  @Override
+  public CreateConsumerUserResponse createNewConsumerUser(CreateConsumerUserRequest request)
+      throws ProfileException,
+          StateNotFoundException,
+          GenderNotFoundException,
+          ZipcodeNotFoundException,
+          UserTypeNotFoundException,
+          ProfileTypeNotFoundException {
+<span class="nc" id="L60">    return delegate.createNewConsumerUser(request);</span>
+  }
+
+  @Override
+  public CreateDispensaryUserResponse createNewDispensaryUser(CreateDispensaryUserRequest request)
+      throws ProfileException, ProfileTypeNotFoundException {
+<span class="nc" id="L66">    return delegate.createNewDispensaryUser(request);</span>
+  }
+
+  @Override
+  @CircuitBreaker(name = &quot;remote-gets&quot;, fallbackMethod = &quot;fallbackMethodForGetUserById&quot;)
+  public GetUserResponse getUserById(Long userId) throws NotFoundException {
+<span class="nc" id="L72">    return delegate.getUserById(userId);</span>
+  }
+
+  private GetUserResponse fallbackMethodForGetUserById(Exception e) {
+<span class="nc" id="L76">    return GetUserResponse.builder().email(&quot;Not Available&quot;).build();</span>
+  }
+
+  @Override
+  @CircuitBreaker(name = &quot;remote-gets&quot;, fallbackMethod = &quot;fallbackMethodForGetAdminUserById&quot;)
+  public GetAdminUserResponse getAdminUserById(Long userId) throws NotFoundException {
+<span class="nc" id="L82">    return delegate.getAdminUserById(userId);</span>
+  }
+
+  private GetAdminUserResponse fallbackMethodForGetAdminUserById(Exception e) {
+<span class="nc" id="L86">    return (GetAdminUserResponse) GetAdminUserResponse.builder().email(&quot;Not Available&quot;).build();</span>
+  }
+
+  @Override
+  public GetConsumerUserResponse getConsumerUserById(Long userId) throws NotFoundException {
+<span class="nc" id="L91">    return delegate.getConsumerUserById(userId);</span>
+  }
+
+  @Override
+  public GetDispensaryUserResponse getDispensaryUserById(Long userId) throws NotFoundException {
+<span class="nc" id="L96">    return delegate.getDispensaryUserById(userId);</span>
+  }
+
+  @Override
+  public GetDispensaryUserResponse getDispensaryUserByDispensaryId(Long dispensaryId)
+      throws NotFoundException {
+<span class="nc" id="L102">    return delegate.getDispensaryUserByDispensaryId(dispensaryId);</span>
+  }
+
+  @Override
+  public PageResponse&lt;GetAllAdminUsersResponse&gt; getAllAdmins(PageableRequest pageable) {
+<span class="nc" id="L107">    return delegate.getAllAdmins(pageable);</span>
+  }
+
+  @Override
+  public PageResponse&lt;GetAllConsumerUsersResponse&gt; getAllConsumers(PageableRequest pageable) {
+<span class="nc" id="L112">    return delegate.getAllConsumers(pageable);</span>
+  }
+
+  @Override
+  public PageResponse&lt;GetAllDispensaryUsersResponse&gt; getAllDispensaries(PageableRequest pageable) {
+<span class="nc" id="L117">    return delegate.getAllDispensaries(pageable);</span>
+  }
+
+  @Override
+  public UpdateAdminProfileResponse updateAdmin(Long profileId, UpdateAdminProfileRequest request)
+      throws NotFoundException {
+<span class="nc" id="L123">    return delegate.updateAdmin(profileId, request);</span>
+  }
+
+  @Override
+  public UpdateConsumerProfileResponse updateConsumer(
+      Long userId, UpdateConsumerProfileRequest request) throws NotFoundException {
+<span class="nc" id="L129">    return delegate.updateConsumer(userId, request);</span>
+  }
+
+  @Override
+  public UpdateDispensaryProfileResponse updateDispensary(
+      Long userId, UpdateDispensaryProfileRequest request) throws NotFoundException {
+<span class="nc" id="L135">    return delegate.updateDispensary(userId, request);</span>
+  }
+
+  @Override
+  public DeleteUserResponse deleteUserById(Long userId) throws NotFoundException {
+<span class="nc" id="L140">    return delegate.deleteUserById(userId);</span>
+  }
+
+  @Override
+  public DeleteAdminProfileResponse deleteAdminUserById(Long userId) throws NotFoundException {
+<span class="nc" id="L145">    return delegate.deleteAdminUserById(userId);</span>
+  }
+
+  @Override
+  public DeleteConsumerProfileResponse deleteConsumerUserById(Long userId)
+      throws NotFoundException {
+<span class="nc" id="L151">    return delegate.deleteConsumerUserById(userId);</span>
+  }
+
+  @Override
+  public DeleteDispensaryProfileResponse deleteDispensaryUserByDispensaryId(Long dispensaryId)
+      throws NotFoundException {
+<span class="nc" id="L157">    return delegate.deleteDispensaryUserByDispensaryId(dispensaryId);</span>
+  }
+
+  @Override
+  public ActiveStatusProfileResponse activateAdmin(Long userId)
+      throws ProfileException, ProfileTypeNotFoundException, ProfileNotFoundException {
+<span class="nc" id="L163">    return delegate.activateAdmin(userId);</span>
+  }
+
+  @Override
+  public ActiveStatusProfileResponse deactivateAdmin(Long userId)
+      throws ProfileException, ProfileTypeNotFoundException, ProfileNotFoundException {
+<span class="nc" id="L169">    return delegate.deactivateAdmin(userId);</span>
+  }
+
+  @Override
+  public ActiveStatusProfileResponse activateConsumerUser(Long userId)
+      throws ProfileNotFoundException, ProfileEnableStatusExceptionResponseApi {
+<span class="nc" id="L175">    return delegate.activateConsumerUser(userId);</span>
+  }
+
+  @Override
+  public ActiveStatusProfileResponse deactivateConsumerUser(Long userId)
+      throws ProfileNotFoundException, ProfileEnableStatusExceptionResponseApi {
+<span class="nc" id="L181">    return delegate.deactivateConsumerUser(userId);</span>
+  }
+
+  @Override
+  public ActiveStatusProfileResponse activateDispensaryUser(Long userId)
+      throws ProfileNotFoundException, ProfileEnableStatusExceptionResponseApi {
+<span class="nc" id="L187">    return delegate.activateDispensaryUser(userId);</span>
+  }
+
+  @Override
+  public ActiveStatusProfileResponse deactivateDispensaryUser(Long userId)
+      throws ProfileNotFoundException, ProfileEnableStatusExceptionResponseApi {
+<span class="nc" id="L193">    return delegate.deactivateDispensaryUser(userId);</span>
+  }
+
+  @Override
+  public ValidateUserResponse validateUser(ValidateUserRequest request)
+      throws NotFoundException, UnauthorizedException {
+<span class="nc" id="L199">    return delegate.validateUser(request);</span>
+  }
+
+  @Override
+  public void sendCode(SendCodeRequest request) throws NotFoundException, InvalidRequestException {
+<span class="nc" id="L204">    delegate.sendCode(request);</span>
+<span class="nc" id="L205">  }</span>
+
+  @Override
+  public void verifyCode(VerifyCodeRequest request)
+      throws NotFoundException, InvalidRequestException {
+<span class="nc" id="L210">    delegate.verifyCode(request);</span>
+<span class="nc" id="L211">  }</span>
+
+  @Override
+  public PageResponse&lt;GenderResponse&gt; getAllGenders(PageableRequest pageable)
+      throws NotFoundException {
+<span class="nc" id="L216">    return delegate.getAllGenders(pageable);</span>
+  }
+
+  @Override
+  public GenderResponse getGenderById(long genderId) throws GenderNotFoundException {
+<span class="nc" id="L221">    return delegate.getGenderById(genderId);</span>
+  }
+
+  @Override
+  public PageResponse&lt;UserTypeResponse&gt; getAllUserTypes(PageableRequest pageable) {
+<span class="nc" id="L226">    return delegate.getAllUserTypes(pageable);</span>
+  }
+
+  @Override
+  public UserTypeResponse getUserTypeById(long userTypeId) throws UserTypeNotFoundException {
+<span class="nc" id="L231">    return delegate.getUserTypeById(userTypeId);</span>
+  }
+
+  @Override
+  public GetConsumerStateTax getStateTaxByUserId(Long userId) throws NotFoundException {
+<span class="nc" id="L236">    return delegate.getStateTaxByUserId(userId);</span>
+  }
+
+  @Override
+  public UpdateProfileImageResponse changeProfileImageStatus(String imageUrl) {
+<span class="nc" id="L241">    return delegate.changeProfileImageStatus(imageUrl);</span>
+  }
+
+  @Override
+  public ImageUploadLocationResponse getMmjCardImageUploadLocation(String imageExtension) {
+<span class="nc" id="L246">    return delegate.getMmjCardImageUploadLocation(imageExtension);</span>
+  }
+
+  @Override
+  public ImageUploadLocationResponse getAvatarImageUploadLocation(String extension) {
+<span class="nc" id="L251">    return delegate.getAvatarImageUploadLocation(extension);</span>
+  }
+
+  @Override
+  public UpdateCardImageToUploadedStateResponse updateCardImageStatus(String imageUrl) {
+<span class="nc" id="L256">    return delegate.updateCardImageStatus(imageUrl);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
