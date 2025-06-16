@@ -20,10 +20,10 @@ package io.oigres.ecomm.service.orders.web;
 import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import io.oigres.ecomm.service.orders.domain.DomainException;
 import io.oigres.ecomm.service.orders.model.CreateCartException;
+import io.oigres.ecomm.service.orders.model.NotFoundException;
 import io.oigres.ecomm.service.orders.model.StockTimeOutException;
 import io.oigres.ecomm.service.products.model.CommonErrorHandlerResponse;
 import io.oigres.ecomm.service.products.model.exception.NoStockException;
-import io.oigres.ecomm.service.products.model.exception.NotFoundException;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
@@ -50,7 +50,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-@ConditionalOnBean(BasicErrorController.class)
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   private final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
@@ -150,6 +149,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(NotFoundException.class)
   public ResponseEntity<Object> handleNotFoundException(
       NotFoundException ex, HttpServletRequest request) {
+    return customHandleException(HttpStatus.NOT_FOUND, ex, request);
+  }
+
+
+  @ExceptionHandler(io.oigres.ecomm.service.products.model.exception.NotFoundException.class)
+  public ResponseEntity<Object> handleNotFoundException(
+    io.oigres.ecomm.service.products.model.exception.NotFoundException ex, HttpServletRequest request) {
     return customHandleException(HttpStatus.NOT_FOUND, ex, request);
   }
 

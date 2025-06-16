@@ -49,7 +49,7 @@ spring:
     username: orders_service
     password: 1234
   jpa:
-    open-in-view: false
+    open-in-view: true
     show-sql: false
     generate-ddl: false
     hibernate:
